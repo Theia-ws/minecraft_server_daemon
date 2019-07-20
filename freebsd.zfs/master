@@ -1,0 +1,43 @@
+#!/bin/sh
+
+. [[[SERVICE_CONFIG_DIR]]]/[[[MINECRAFT_SERVER_SERVICE_NAME]]]
+. [[[SERVICE_LIB_DIR]]]/FUNC_BACKUP
+. [[[SERVICE_LIB_DIR]]]/FUNC_BUILD
+. [[[SERVICE_LIB_DIR]]]/FUNC_EXECCOMMAND
+. [[[SERVICE_LIB_DIR]]]/FUNC_REMOVE
+. [[[SERVICE_LIB_DIR]]]/FUNC_SNAPSHOT
+
+case "$1" in
+backup)
+	FUNC_BACKUP
+;;
+build)
+	FUNC_BUILD
+;;
+command)
+	FUNC_EXECCOMMAND "$2"
+;;
+remove)
+	FUNC_REMOVE "$2"
+;;
+restart)
+	service ${MINECRAFT_SERVER_SERVICE_NAME} stop
+	service ${MINECRAFT_SERVER_SERVICE_NAME} start
+;;
+snapshot)
+	FUNC_SNAPSHOT
+;;
+start)
+	service ${MINECRAFT_SERVER_SERVICE_NAME} start
+;;
+status)
+	service ${MINECRAFT_SERVER_SERVICE_NAME} status
+;;
+stop)
+	service ${MINECRAFT_SERVER_SERVICE_NAME} stop
+;;
+*)
+echo $"Usage: $0 {backup|build|command|restart|snapshot|start|stop}"
+exit 1
+esac
+exit 0

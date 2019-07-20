@@ -1,0 +1,13 @@
+#!/bin/sh
+
+. [[[SERVICE_CONFIG_DIR]]]/[[[MINECRAFT_SERVER_SERVICE_NAME]]]
+
+FUNC_REMOVE(){
+	systemctl disable ${MINECRAFT_SERVER_SERVICE_NAME}
+	systemctl stop ${MINECRAFT_SERVER_SERVICE_NAME}
+	unlink [[[BIN_DIR]]]/[[[MINECRAFT_SERVER_SERVICE_NAME]]]
+	rm -rf [[[SERVICE_LIB_DIR]]]
+	rm -rf [[[SERVICE_CONFIG_DIR]]]/[[[MINECRAFT_SERVER_SERVICE_NAME]]]
+	rm -rf [[[UNIT_DIR]]]/[[[MINECRAFT_SERVER_SERVICE_NAME]]].service
+	systemctl daemon-reload
+}

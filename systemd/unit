@@ -1,0 +1,14 @@
+[Unit]
+Description=The Minecraft Server
+After=syslog.target network.target
+
+[Service]
+Type=forking
+Restart=always
+EnvironmentFile=[[[SERVICE_CONFIG_DIR]]]/[[[MINECRAFT_SERVER_SERVICE_NAME]]]
+ExecStart=[[[SERVICE_LIB_DIR]]]/EXEC_START
+ExecReload=[[[SERVICE_LIB_DIR]]]/EXEC_RELOAD
+ExecStop=[[[SERVICE_LIB_DIR]]]/EXEC_STOP
+
+[Install]
+WantedBy=multi-user.target

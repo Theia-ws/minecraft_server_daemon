@@ -1,0 +1,5 @@
+#!/bin/sh
+
+. [[[SERVICE_LIB_DIR]]]/FUNC_EXECCOMMAND
+
+FUNC_EXECCOMMAND "reload"

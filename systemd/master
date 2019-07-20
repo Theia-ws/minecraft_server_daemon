@@ -1,0 +1,35 @@
+#!/bin/sh
+
+. [[[SERVICE_CONFIG_DIR]]]/[[[MINECRAFT_SERVER_SERVICE_NAME]]]
+. [[[SERVICE_LIB_DIR]]]/FUNC_BUILD
+. [[[SERVICE_LIB_DIR]]]/FUNC_EXECCOMMAND
+. [[[SERVICE_LIB_DIR]]]/FUNC_REMOVE
+
+case "$1" in
+build)
+	FUNC_BUILD
+;;
+command)
+	FUNC_EXECCOMMAND "$2"
+;;
+remove)
+	FUNC_REMOVE
+;;
+restart)
+	systemctl stop ${MINECRAFT_SERVER_SERVICE_NAME}
+	systemctl start ${MINECRAFT_SERVER_SERVICE_NAME}
+;;
+start)
+	systemctl start ${MINECRAFT_SERVER_SERVICE_NAME}
+;;
+status)
+	systemctl status ${MINECRAFT_SERVER_SERVICE_NAME}
+;;
+stop)
+	systemctl stop ${MINECRAFT_SERVER_SERVICE_NAME}
+;;
+*)
+echo $"Usage: $0 {build|command|restart|start|stop}"
+exit 1
+esac
+exit 0

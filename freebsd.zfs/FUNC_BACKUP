@@ -1,0 +1,32 @@
+#!/bin/sh
+
+. [[[SERVICE_CONFIG_DIR]]]/[[[MINECRAFT_SERVER_SERVICE_NAME]]]
+. [[[SERVICE_LIB_DIR]]]/FUNC_DICTIONARY_MANAGER
+. [[[SERVICE_CONFIG_DIR]]]/[[[MINECRAFT_SERVER_SERVICE_NAME]]].zfs
+
+FUNC_BACKUP(){
+	
+	loopend=`SNAPSHOT_TARGET_VOLUME__LOOPEND`
+	for index in `seq 0 ${loopend}`; do
+		volume=`SNAPSHOT_TARGET_VOLUME__GET_NAME ${index}`
+		
+		snapshot=`zfs list -H -o name -t snapshot -r ${volume} | sort | tail -n 1`
+		
+		if [ $? -ne 0 ]; then
+			echo "Can't backup.Please execute command \"/usr/local/bin/${MINECRAFT_SERVER_SERVICE_NAME} snapshot\" before make backup. Target volume:${volume}"
+			continue
+		fi
+		
+		snapshot_date=${snapshot#${volume}@}
+		
+		world_name=`SNAPSHOT_TARGET_WORLD__GET_NAME ${index}`
+		
+		zfs send ${snapshot} > ${BACKUP_DIR}/${world_name}${snapshot_date}.zfs
+		
+		[ -n "`ls -t ${BACKUP_DIR}/ | grep -e ${volume} | sort -r | tail -n+${MAX_NUMBER_OF_BACKUP}`" ] && rm -v `ls -t ${BACKUP_DIR}/ | grep -e ${volume} | sort -r | tail -n+${MAX_NUMBER_OF_BACKUP}`
+		
+	done
+	
+	chown -R ${MINECRAFT_SERVER_EXECUTE_USER}:${MINECRAFT_SERVER_EXECUTE_GROUP} ${MINECRAFT_SERVER_ROOT}
+	
+}

@@ -1,0 +1,32 @@
+#!/bin/sh
+
+. [[[SERVICE_CONFIG_DIR]]]/[[[MINECRAFT_SERVER_SERVICE_NAME]]]
+. [[[SERVICE_LIB_DIR]]]/FUNC_EXECCOMMAND
+
+FUNC_STOP(){
+	echo -n $"Stopping ${MINECRAFT_SERVER_SERVICE_NAME} daemon:"
+	FUNC_EXECCOMMAND "save-all"
+	if test $? -eq 0
+	then
+		while [ ${DEFAULT_STOP_WATE_TIME} -ne 0 ]
+		do
+			if test `expr ${DEFAULT_STOP_WATE_TIME} % 30` -eq 0 -o ${DEFAULT_STOP_WATE_TIME} -le 10
+			then
+				FUNC_EXECCOMMAND "say Server will stop in ${DEFAULT_STOP_WATE_TIME} seconds."
+			fi
+			DEFAULT_STOP_WATE_TIME=`expr ${DEFAULT_STOP_WATE_TIME} - 1`
+			sleep 1
+		done
+		FUNC_EXECCOMMAND "stop"
+		while [ $? -eq 0 ]
+		do
+			sleep 1
+			FUNC_EXECCOMMAND '' >& /dev/null
+		done
+		rm -f /var/lock/subsys/${MINECRAFT_SERVER_SERVICE_NAME}
+		echo_success
+	else
+		echo_passed
+	fi
+	printf "\n"
+}

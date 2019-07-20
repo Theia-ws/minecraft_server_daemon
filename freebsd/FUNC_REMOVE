@@ -1,0 +1,18 @@
+#!/bin/sh
+
+. [[[SERVICE_CONFIG_DIR]]]/[[[MINECRAFT_SERVER_SERVICE_NAME]]]
+
+FUNC_REMOVE(){
+	sed -i "" -e "/^[[[MINECRAFT_SERVER_SERVICE_NAME]]]_enable=\"YES\"/d" /etc/rc.conf
+	service ${MINECRAFT_SERVER_SERVICE_NAME} stop
+	unlink [[[BIN_DIR]]]/[[[MINECRAFT_SERVER_SERVICE_NAME]]]
+	rm -rf [[[SERVICE_LIB_DIR]]]
+	rm -rf [[[SERVICE_CONFIG_DIR]]]
+	rm -rf [[[UNIT_DIR]]]/[[[MINECRAFT_SERVER_SERVICE_NAME]]]
+	if [ "$1" = "dppkg" ]; then
+		pkg delete -y screen
+		pkg delete -y git
+		pkg delete -y openjdk8-jre
+		pkg autoremove -y
+	fi
+}

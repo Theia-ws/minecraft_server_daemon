@@ -1,0 +1,31 @@
+#!/bin/sh
+# chkconfig:345 99 01
+# description: [[[MINECRAFT_SERVER_SERVICE_NAME]]]
+
+. /etc/rc.d/init.d/functions
+. [[[SERVICE_LIB_DIR]]]/FUNC_START
+. [[[SERVICE_LIB_DIR]]]/FUNC_STOP
+. [[[SERVICE_LIB_DIR]]]/FUNC_RESTART
+. [[[SERVICE_LIB_DIR]]]/FUNC_RELOAD
+
+case "$1" in
+start)
+	FUNC_START
+;;
+stop)
+	FUNC_STOP
+;;
+restart)
+	FUNC_RESTART
+;;
+status)
+	status -l ${MINECRAFT_SERVER_SERVICE_NAME} ${MINECRAFT_SERVER_SERVICE_NAME}
+;;
+reload)
+	FUNC_RELOAD
+;;
+*)
+echo $"Usage: $0 {start|stop|reload|restart}"
+exit 1
+esac
+exit 0

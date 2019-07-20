@@ -1,0 +1,18 @@
+#!/bin/sh
+
+#ワールドを保存する親プール
+WROLD_PUT_PEARENT_POOL "zroot"
+
+#スナップショット対象のワールド
+SNAPSHOT_TARGET_WORLD "world"
+SNAPSHOT_TARGET_WORLD "world_nether"
+SNAPSHOT_TARGET_WORLD "world_the_end"
+
+#スナップショット上限数
+MAX_NUMBER_OF_SNAPSHOT=4320
+
+#バックアップの保管先
+BACKUP_DIR=/home/minecraft/backup
+
+#バックアップ上限数
+MAX_NUMBER_OF_BACKUP=366

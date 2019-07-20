@@ -1,0 +1,5 @@
+#!/bin/sh
+
+. [[[SERVICE_LIB_DIR]]]/FUNC_START
+
+FUNC_START

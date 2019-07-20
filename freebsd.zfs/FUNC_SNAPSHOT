@@ -1,0 +1,27 @@
+#!/bin/sh
+
+. [[[SERVICE_CONFIG_DIR]]]/[[[MINECRAFT_SERVER_SERVICE_NAME]]]
+. [[[SERVICE_LIB_DIR]]]/FUNC_DICTIONARY_MANAGER
+. [[[SERVICE_LIB_DIR]]]/FUNC_EXECCOMMAND
+
+FUNC_SNAPSHOT(){
+	
+	FUNC_EXECCOMMAND "save-off"
+	FUNC_EXECCOMMAND "save-all"
+	sleep 60
+	
+	loopend=`SNAPSHOT_TARGET_VOLUME__LOOPEND`
+	for index in `seq 0 ${loopend}`; do
+		volume=`SNAPSHOT_TARGET_VOLUME__GET_NAME $index`
+		
+		zfs snapshot ${volume}@$(date -u +'%Y%m%dT%H%M%SZ')
+		
+		for snapshot in $(`zfs list -H -o name -t snapshot -r ${volume} | sort -r | tail -n+${MAX_NUMBER_OF_SNAPSHOT}`); do
+			zfs destroy ${snapshot}
+		done
+		
+	done
+	
+	FUNC_EXECCOMMAND "save-on"
+	
+}

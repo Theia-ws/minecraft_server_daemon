@@ -1,0 +1,21 @@
+#!/bin/sh
+
+. [[[SERVICE_CONFIG_DIR]]]/[[[MINECRAFT_SERVER_SERVICE_NAME]]]
+
+FUNC_BUILD(){
+	RESULT=0
+	mkdir -p /tmp/minecraft_server/build/
+	cd /tmp/minecraft_server/build/
+	${CURL_PATH} https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar -o /tmp/minecraft_server/build/BuildTools.jar
+	java -jar /tmp/minecraft_server/build/BuildTools.jar --rev ${SERVER_REVISION}
+	if [ -e ${JAR_PATH} ]; then
+		mv ${JAR_PATH} ${JAR_PATH}.bak
+	fi
+	mv /tmp/minecraft_server/build/${SERVER_TYPE}-*jar ${JAR_PATH}
+	if [ ! -e ${JAR_PATH} ]; then
+		RESULT=1
+		mv ${JAR_PATH}.bak ${JAR_PATH}
+	fi
+	rm -rf /tmp/minecraft_server/build
+	exit ${RESULT}
+}
