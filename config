@@ -37,7 +37,7 @@ JAR_PATH="/usr/local/lib/minecraft_server/minecraft_server.jar"
 SERVER_TYPE="craftbukkit"
 
 #サーバーのバージョン
-SERVER_REVISION="1.13.2"
+SERVER_REVISION="1.14.4"
 
 #終了ウェイトタイム
 DEFAULT_STOP_WATE_TIME=60
