@@ -6,12 +6,13 @@ cd $(dirname $0)
 . ./freebsd.zfs/FUNC_DICTIONARY_MANAGER
 . ./freebsd.zfs/config.zfs
 
-INSTALL_SOURCE_DIR=./
-UNIT_DIR=/etc/rc.d
-INSTALLD_UNIT_FILENAME=${MINECRAFT_SERVER_SERVICE_NAME}
-SERVICE_CONFIG_DIR=/usr/local/etc/${MINECRAFT_SERVER_SERVICE_NAME}
-SERVICE_LIB_DIR=/usr/local/lib/${MINECRAFT_SERVER_SERVICE_NAME}
-BIN_DIR=/usr/local/bin
+INSTALL_SOURCE_DIR="./"
+UNIT_DIR="/etc/rc.d"
+INSTALLD_UNIT_FILENAME="${MINECRAFT_SERVER_SERVICE_NAME}"
+SERVICE_CONFIG_DIR="/usr/local/etc/${MINECRAFT_SERVER_SERVICE_NAME}"
+SERVICE_LIB_DIR="/usr/local/lib/${MINECRAFT_SERVER_SERVICE_NAME}"
+BIN_DIR="/usr/local/bin"
+
 
 install_dependent_package(){
 	which ${CURL_PATH} > /dev/null 2>&1

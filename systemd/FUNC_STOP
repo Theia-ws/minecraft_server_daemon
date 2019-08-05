@@ -5,10 +5,9 @@
 
 FUNC_STOP(){
 	FUNC_EXECCOMMAND "save-all"
-	while [ ${DEFAULT_STOP_WATE_TIME} -ne 0 ]
-	do
-		if test `expr ${DEFAULT_STOP_WATE_TIME} % 30` -eq 0 -o ${DEFAULT_STOP_WATE_TIME} -le 10
-		then
+	if [ $? -eq 0 ]; then
+		while [ ${DEFAULT_STOP_WATE_TIME} -ne 0 ]; do
+			if [ `expr ${DEFAULT_STOP_WATE_TIME} % 30` -eq 0 -o ${DEFAULT_STOP_WATE_TIME} -le 10 ]; then
 			FUNC_EXECCOMMAND "say Server will stop in ${DEFAULT_STOP_WATE_TIME} seconds."
 		fi
 		DEFAULT_STOP_WATE_TIME=`expr ${DEFAULT_STOP_WATE_TIME} - 1`
@@ -16,4 +15,5 @@ FUNC_STOP(){
 	done
 	FUNC_EXECCOMMAND "stop"
 	rm /var/lock/subsys/${MINECRAFT_SERVER_SERVICE_NAME}
+	fi
 }

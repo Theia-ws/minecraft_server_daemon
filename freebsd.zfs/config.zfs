@@ -12,7 +12,7 @@ SNAPSHOT_TARGET_WORLD "world_the_end"
 MAX_NUMBER_OF_SNAPSHOT=4320
 
 #バックアップの保管先
-BACKUP_DIR=/home/minecraft/backup
+BACKUP_DIR="/home/minecraft/backup"
 
 #バックアップ上限数
 MAX_NUMBER_OF_BACKUP=366

@@ -6,8 +6,7 @@
 FUNC_STOP(){
 	FUNC_EXECCOMMAND "save-all"
 	if [ $? -eq 0 ]; then
-	while [ ${DEFAULT_STOP_WATE_TIME} -ne 0 ]
-	do
+		while [ ${DEFAULT_STOP_WATE_TIME} -ne 0 ]; do
 			if [ `expr ${DEFAULT_STOP_WATE_TIME} % 30` -eq 0 -o ${DEFAULT_STOP_WATE_TIME} -le 10 ]; then
 			FUNC_EXECCOMMAND "say Server will stop in ${DEFAULT_STOP_WATE_TIME} seconds."
 		fi
