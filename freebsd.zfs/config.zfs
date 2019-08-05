@@ -11,6 +11,12 @@ SNAPSHOT_TARGET_WORLD "world_the_end"
 #スナップショット上限数
 MAX_NUMBER_OF_SNAPSHOT=4320
 
+#スナップショット前のセーブ(true=する、false=しない)
+SAVE_BEFORE_SNAPSHOT=true
+
+#セーブ待機時間
+SAVE_WAITE=60
+
 #バックアップの保管先
 BACKUP_DIR="/home/minecraft/backup"
 

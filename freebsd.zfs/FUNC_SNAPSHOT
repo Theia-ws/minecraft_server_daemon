@@ -7,8 +7,10 @@
 FUNC_SNAPSHOT(){
 	
 	FUNC_EXECCOMMAND "save-off"
+	if [ ${SAVE_BEFORE_SNAPSHOT} = "true" ] ; then
 	FUNC_EXECCOMMAND "save-all"
-	sleep 60
+		sleep ${SAVE_WAITE}
+	fi
 	
 	loopend=`SNAPSHOT_TARGET_VOLUME__LOOPEND`
 	for index in `seq 0 ${loopend}`; do
