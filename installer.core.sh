@@ -1,5 +1,13 @@
 #!/bin/sh
 
+check_install_user(){
+	if [ `id -u` -eq 0 ]; then
+		return 0
+	fi
+	echo "Need root parmissions for install."
+	return 1
+}
+
 replace_env_val(){
 	SERVICE_CONFIG_DIR_SED=`echo ${SERVICE_CONFIG_DIR} | sed -e 's/\//\\\\\//g'`
 	SERVICE_LIB_DIR_SED=`echo ${SERVICE_LIB_DIR} | sed -e 's/\//\\\\\//g'`

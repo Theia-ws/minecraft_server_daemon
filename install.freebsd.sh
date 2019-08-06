@@ -11,6 +11,14 @@ SERVICE_CONFIG_DIR="/usr/local/etc/${MINECRAFT_SERVER_SERVICE_NAME}"
 SERVICE_LIB_DIR="/usr/local/lib/${MINECRAFT_SERVER_SERVICE_NAME}"
 BIN_DIR="/usr/local/bin"
 
+check_can_install(){
+	endcode=0
+	check_install_user
+	if [ $? -ne 0 ]; then
+		endcode=1
+	fi
+	return ${endcode}
+}
 
 install_dependent_package(){
 	which ${CURL_PATH} > /dev/null 2>&1
@@ -34,6 +42,10 @@ make_execute_user(){
 
 . ./installer.core.sh
 
+check_can_install
+if [ $? -eq 1 ]; then
+	exit 1
+fi
 install_dependent_package
 make_execute_user
 replace_env_val common

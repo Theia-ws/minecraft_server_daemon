@@ -13,6 +13,24 @@ SERVICE_CONFIG_DIR="/usr/local/etc/${MINECRAFT_SERVER_SERVICE_NAME}"
 SERVICE_LIB_DIR="/usr/local/lib/${MINECRAFT_SERVER_SERVICE_NAME}"
 BIN_DIR="/usr/local/bin"
 
+check_can_install(){
+	endcode=0
+	check_install_user
+	if [ $? -ne 0 ]; then
+		endcode=1
+	fi
+	loopend=`SNAPSHOT_TARGET_VOLUME__LOOPEND`
+	for index in `seq 0 ${loopend}`; do
+		volume=`SNAPSHOT_TARGET_VOLUME__GET_NAME ${index}`
+		mountpoint=`SNAPSHOT_TARGET_VOLUME__GET_MOUNTPOINT ${index}`
+		result=`zfs list -o mountpoint ${volume} 2> /dev/null`
+		if [ $? -eq 0 ] && [ "${result}" = "${mountpoint}" ]; then
+			echo "To be created volume is existed at different mount point.\nPlease \"${volume}\" volume\'s mount point is change to \"${mountpoint}\" or delete."
+			endcode=1
+		fi
+	done
+	return ${endcode}
+}
 
 install_dependent_package(){
 	which ${CURL_PATH} > /dev/null 2>&1
@@ -32,29 +50,6 @@ cild_file_sed(){
 make_execute_user(){
 	id ${MINECRAFT_SERVER_EXECUTE_USER} > /dev/null  2>&1
 	[ $? -ne 0 ] && pw useradd -n ${MINECRAFT_SERVER_EXECUTE_USER} -s /sbin/nologin -m
-}
-
-check_can_install(){
-	
-	endcode=0
-	
-	loopend=`SNAPSHOT_TARGET_VOLUME__LOOPEND`
-		
-	for index in `seq 0 ${loopend}`; do
-		
-		volume=`SNAPSHOT_TARGET_VOLUME__GET_NAME ${index}`
-		mountpoint=`SNAPSHOT_TARGET_VOLUME__GET_MOUNTPOINT ${index}`
-		
-		result=`zfs list -o mountpoint ${volume} 2> /dev/null`
-		if [ $? -eq 0 ] && [ "${result}" = "${mountpoint}" ]; then
-			echo "To be created volume is existed at different mount point.\nPlease \"${volume}\" volume\'s mount point is change to \"${mountpoint}\" or delete."
-			endcode=1
-		fi
-		
-	done
-	
-	return ${endcode}
-	
 }
 
 install_zfs_config(){
