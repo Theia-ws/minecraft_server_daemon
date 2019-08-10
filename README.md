@@ -40,7 +40,7 @@
 <tr><td>status</td><td>✔</td><td>✔</td><td>✔</td><td>✔</td><td>デーモンを起動状態を表示します。</td></tr>
 <tr><td>stop</td><td>✔</td><td>✔</td><td>✔</td><td>✔</td><td>デーモンを停止します。</td></tr>
 </table>
-<h3>サポートOS</h3>
+<h3>動作確認OS</h3>
 <table>
 <tr><th>FreeBSD</th><th>FreeBSD<br/>ZFS(推奨)</th><th>Initd</th><th>Systemd</th></tr>
 <tr><td>FreeBSD 12</td><td>FreeBSD 12</td><td>CentOS 6</td><td>CentOS 7</td></tr>
