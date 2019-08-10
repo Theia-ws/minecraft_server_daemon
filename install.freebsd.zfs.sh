@@ -1,5 +1,7 @@
 #!/bin/sh
 
+execute_file_path="$(cd $(dirname $0) && pwd)/$(basename $0)"
+execute_paramator="$@"
 cd $(dirname $0)
 
 . ./config
@@ -15,7 +17,7 @@ BIN_DIR="/usr/local/bin"
 
 check_can_install(){
 	endcode=0
-	check_install_user
+	switch_execute_user "Sudo is required to install. Please input your account password." "Need root parmissions for install." ${execute_file_path} ${execute_paramator}
 	if [ $? -ne 0 ]; then
 		endcode=1
 	fi

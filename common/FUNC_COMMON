@@ -1,0 +1,36 @@
+#!/bin/sh
+
+check_execute_user(){
+	if [ `id -u` -eq 0 ]; then
+		return 0
+	fi
+	echo "${1}"
+	return 1
+}
+
+switch_execute_user(){
+	which sudo > /dev/null 2>&1
+	can_sudo=$?
+	if [ ${can_sudo} -eq 0 ]; then
+		check_execute_user "${1}"
+		if [ $? -eq 0 ]; then
+			return 0
+		fi
+		if [ $# -ge 3 ]; then
+			execute_file_path="${3}"
+			shift 3
+			execute_paramator="$@"
+			sudo ${execute_file_path} ${execute_paramator}
+		else
+			sudo ${3}
+		fi
+		return 2
+	else
+		check_execute_user ${2}
+		if [ $? -eq 0 ]; then
+			return 0
+		fi
+		return 1
+	fi
+	return 0
+}
