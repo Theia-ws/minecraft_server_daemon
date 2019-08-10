@@ -81,6 +81,8 @@
 <li>WROLD_PUT_PEARENT_POOL<br/>ワールドを保存する親zpoolを指定します。FreeBSDをZFSのルートストレージでインストールした時の初期値になっています。</li>
 <li>SNAPSHOT_TARGET_WORLD<br/>スナップショットを作成する対象となるワールド名を指定します。地上、ネザー、エンドそれぞれに指定する必要がります。ワールドの指定数に上限はありません。[WROLD_PUT_PEARENT_POOL]/[MINECRAFT_SERVER_SERVICE_NAME_SNAPSHOT]_[SNAPSHOT_TARGET_WORLD]の形式でZFSボリュームを作成します。WROLD_PUT_PEARENT_POOL=zpool、MINECRAFT_SERVER_SERVICE_NAME_SNAPSHOT=minecraft_server、SNAPSHOT_TARGET_WORLD=worldの場合、「zpool/minecraft_server_world」となります。Multivirse等マルチワールドPlug-inを使用している場合、インストール時に設定しなければZFSボリュームの自動作成は行われません。</li>
 <li>MAX_NUMBER_OF_SNAPSHOT<br/>スナップショットの上限数を指定します。上限を超えた場合、古いスナップショットから削除されます。</li>
+<li>SAVE_BEFORE_SNAPSHOT<br/>スナップショット前のセーブを行うか行わないか(true=する、false=しない)。定期的なセーブを行っている場合はfalseにして良い。</li>
+<li>SAVE_WAITE<br/>save-allコマンドにセーブ待機を行う時間。短すぎる時間を設定すると破損したワールドをバックアップする事になる為適切な時間を設定する事。</li>
 <li>BACKUP_DIR<br/>バックアップを出力するディレクトリを指定します。</li>
 <li>MAX_NUMBER_OF_BACKUP<br/>バックアップの上限数を指定します。上限を超えた場合、古いバックアップから削除されます。</li>
 </ol>
