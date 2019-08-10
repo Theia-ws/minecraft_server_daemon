@@ -4,18 +4,42 @@
 
 FUNC_BUILD(){
 	RESULT=0
+	if [ ${SERVER_TYPE} = "spigot" ]; then
+		FUNC_SPIGOT_BUILD "/tmp/minecraft_server/build/Spigot/Spigot-Server/target/${SERVER_TYPE}-*jar"
+		RESULT=$?
+	elif [ ${SERVER_TYPE} = "craftbukkit" ]; then
+		FUNC_SPIGOT_BUILD "/tmp/minecraft_server/build/CraftBukkit/target/${SERVER_TYPE}-*jar"
+		RESULT=$?
+	fi
+	return ${RESULT}
+}
+
+FUNC_SPIGOT_BUILD(){
+	RESULT=0
 	mkdir -p /tmp/minecraft_server/build/
 	cd /tmp/minecraft_server/build/
 	${CURL_PATH} https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar -o /tmp/minecraft_server/build/BuildTools.jar
 	java -jar /tmp/minecraft_server/build/BuildTools.jar --rev ${SERVER_REVISION}
+	FUNC_JAR_REPLACE "/tmp/minecraft_server/build/${SERVER_TYPE}-*jar"
+	RESULT=$?
+	if [ ${RESULT} -ne 0 ]; then
+		FUNC_JAR_REPLACE "${1}"
+		RESULT=$?
+	fi
+	rm -rf /tmp/minecraft_server/build
+	return ${RESULT}
+}
+
+FUNC_JAR_REPLACE(){
 	if [ -e ${JAR_PATH} ]; then
 		mv ${JAR_PATH} ${JAR_PATH}.bak
 	fi
-	mv /tmp/minecraft_server/build/${SERVER_TYPE}-*jar ${JAR_PATH}
+	mv ${1} ${JAR_PATH}
 	if [ ! -e ${JAR_PATH} ]; then
-		RESULT=1
-		mv ${JAR_PATH}.bak ${JAR_PATH}
+		if [ -e ${JAR_PATH}.bak ]; then
+			mv ${JAR_PATH}.bak ${JAR_PATH}
+		fi
+		return 1
 	fi
-	rm -rf /tmp/minecraft_server/build
-	exit ${RESULT}
+	return 0
 }
