@@ -92,4 +92,5 @@
 <ol>
 <li>Systemcdをインストールし、OSを再起動した場合に予告メッセージを表示せずに終了する。<br/>回避法:サーバOS再起動時に「systemctl stop minecraft_server」→「shutdown -r now」と実行する。</li>
 <li>スクリプト実行時に不要なメッセージが表示される。</li>
+<li>Minecraft 1.14以降craftbukkitをインストールできない。</li>
 </ol>
