@@ -13,7 +13,7 @@
 <tr><th></th><th>FreeBSD</th><th>FreeBSD<br/>ZFS(推奨)</th><th>Initd</th><th>Systemd</th></tr>
 <tr><td>curl</td><td>✔</td><td>✔</td><td>❌</td><td>❌</td></tr>
 <tr><td>git</td><td>✔</td><td>✔</td><td>❌</td><td>❌</td></tr>
-<tr><td>jre8</td><td>✔</td><td>✔</td><td>❌</td><td>❌</td></tr>
+<tr><td>jre17</td><td>✔</td><td>✔</td><td>❌</td><td>❌</td></tr>
 <tr><td>screen</td><td>✔</td><td>✔</td><td>❌</td><td>❌</td></tr>
 </table>
 <h3>実行ユーザ</h3>
@@ -43,7 +43,7 @@
 <h3>動作確認OS</h3>
 <table>
 <tr><th>FreeBSD</th><th>FreeBSD<br/>ZFS(推奨)</th><th>Initd</th><th>Systemd</th></tr>
-<tr><td>FreeBSD 12</td><td>FreeBSD 12</td><td>CentOS 6</td><td>CentOS 7</td></tr>
+<tr><td>FreeBSD 13</td><td>FreeBSD 13</td><td>CentOS 6</td><td>CentOS 7</td></tr>
 </table>
 <h2>インストール手順</h2>
 <h3>事前準備</h3>
@@ -52,7 +52,7 @@
 <li>curlをインストールします。</li>
 <li>gitをインストールします。</li>
 <li>gitにパスを通します。</li>
-<li>jre8をインストールします。</li>
+<li>jre17をインストールします。</li>
 <li>screenをインストールします。</li>
 <li>サーバを実行するユーザを作成します。(初期値はminecraftです。)</li>
 </ol>

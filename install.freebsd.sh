@@ -28,7 +28,7 @@ install_dependent_package(){
 	which git > /dev/null 2>&1
 	[ $? -ne 0 ] && pkg install -y git
 	which ${JVM_PATH} > /dev/null 2>&1
-	[ $? -ne 0 ] && pkg install -y openjdk8-jre
+	[ $? -ne 0 ] && pkg install -y openjdk17-jre
 	which ${SCREEN_PATH} > /dev/null 2>&1
 	[ $? -ne 0 ] && pkg install -y screen
 }

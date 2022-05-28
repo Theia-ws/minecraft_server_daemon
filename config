@@ -34,10 +34,10 @@ MAX_MEMORY="4096M"
 JAR_PATH="/usr/local/lib/minecraft_server/minecraft_server.jar"
 
 #サーバタイプ(例:craftbukkit,spigot)
-SERVER_TYPE="craftbukkit"
+SERVER_TYPE="spigot"
 
 #サーバーのバージョン
-SERVER_REVISION="1.14.4"
+SERVER_REVISION="1.18.1"
 
 #終了ウェイトタイム
 DEFAULT_STOP_WATE_TIME=60
