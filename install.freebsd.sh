@@ -11,6 +11,7 @@ INSTALL_SOURCE_DIR="./"
 UNIT_DIR="/etc/rc.d"
 INSTALLD_UNIT_FILENAME="${MINECRAFT_SERVER_SERVICE_NAME}"
 SERVICE_CONFIG_DIR="/usr/local/etc/${MINECRAFT_SERVER_SERVICE_NAME}"
+INIT_SYS_NAME="freebsd"
 SERVICE_LIB_DIR="/usr/local/lib/${MINECRAFT_SERVER_SERVICE_NAME}"
 BIN_DIR="/usr/local/bin"
 
@@ -36,10 +37,10 @@ fi
 make_execute_user
 
 replace_env_val common
-replace_env_val freebsd
-install_unit freebsd
+replace_env_val ${INIT_SYS_NAME}
+install_unit ${INIT_SYS_NAME}
 install_config
-install_lib freebsd
+install_lib ${INIT_SYS_NAME}
 make_server_root
 clean
 

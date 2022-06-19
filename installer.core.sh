@@ -22,6 +22,12 @@ install_dependent_package(){
 		
 		apt-get update
 		
+		which sudo > /dev/null 2>&1
+		if [ $? -ne 0 ]; then
+			apt-get install -y sudo
+			[ $? -ne 0 ] && return 1
+		fi
+		
 		which ${CURL_PATH} > /dev/null 2>&1
 		if [ $? -ne 0 ]; then
 			apt-get install -y curl

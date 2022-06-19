@@ -11,6 +11,7 @@ INSTALL_SOURCE_DIR="./"
 UNIT_DIR="/etc/systemd/system"
 INSTALLD_UNIT_FILENAME="${MINECRAFT_SERVER_SERVICE_NAME}.service"
 SERVICE_CONFIG_DIR="/etc/sysconfig"
+INIT_SYS_NAME="systemd"
 SERVICE_LIB_DIR="/usr/local/lib/${MINECRAFT_SERVER_SERVICE_NAME}"
 BIN_DIR="/usr/local/bin"
 
@@ -36,10 +37,10 @@ fi
 make_execute_user
 
 replace_env_val common
-replace_env_val systemd
-install_unit systemd
+replace_env_val ${INIT_SYS_NAME}
+install_unit ${INIT_SYS_NAME}
 install_config
-install_lib systemd
+install_lib ${INIT_SYS_NAME}
 make_server_root
 clean
 

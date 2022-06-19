@@ -8,13 +8,14 @@
 <h3>依存パッケージ</h3>
 <p>このデーモンを実行するには下表のパッケージが必要となる。</p>
 <p>凡例<br/>
-✔:自動インストール　❌:ユーザによるインストールが必要</p>
+✔:自動インストール　❌:ユーザによるインストールが必要　➖：依存なし</p>
 <table>
 <tr><th></th><th>FreeBSD</th><th>FreeBSD<br/>ZFS(推奨)</th><th>Systemd</th><th>Systemd</th><th>Initd</th></tr>
 <tr><td>curl</td><td>✔</td><td>✔</td><td>✔</td><td>✔</td></tr>
 <tr><td>git</td><td>✔</td><td>✔</td><td>✔</td><td>✔</td></tr>
 <tr><td>jre17</td><td>✔</td><td>✔</td><td>✔</td><td>✔</td></tr>
 <tr><td>screen</td><td>✔</td><td>✔</td><td>✔</td><td>✔</td></tr>
+<tr><td>sudo</td><td>➖</td><td>✔</td><td>✔</td><td>✔</td></tr>
 </table>
 <h3>実行ユーザ</h3>
 <p>このデーモンはroot権限により起動処理が行われ、サーバ本体はユーザが設定ファイルで指定したユーザによって実行する。</p>
@@ -43,7 +44,7 @@
 <h3>動作確認OS</h3>
 <table>
 <tr><th>FreeBSD</th><th>FreeBSD<br/>ZFS(推奨)</th><th>Systemd</th><th>Initd</th></tr>
-<tr><td>FreeBSD 13</td><td>FreeBSD 13</td><td>Alma Linux 9(SELnuxの無効化が必要)<br />Utuntu Server 20.4</td><td>No Test</td></tr>
+<tr><td>FreeBSD 13</td><td>FreeBSD 13</td><td>Alma Linux 9(SELnuxの無効化が必要)<br />Utuntu Server 20.4<br />Debian 11.3</td><td>No Test</td></tr>
 </table>
 <h2>インストール手順</h2>
 <h3>事前準備</h3>
@@ -85,13 +86,15 @@
 <p>FreeBSDの場合「./install.freebsd.sh」、FreeBSD ZFSの場合「./install.freebsd.zfs.sh」、Initdの場合「install.initd.sh」、Systemdの場合「install.systemd.sh」を実行する。</p>
 <h3>既知の問題点</h3>
 <ol>
-<li>Alma LinuxでSystemcdをインストールし、OSを再起動した場合に予告メッセージを表示せずに終了する。（同じSystemdを使うUbuntuでは起きないのでよくわからない）<br/>回避法:サーバOS再起動時に「systemctl stop minecraft_server」→「shutdown -r now」と実行する。</li>
+<li>RHEL系環境でOSを再起動した際、シャットダウン予告メッセージを表示せずに終了する。（同じSystemdを使うUbuntuでは起きないので原因はよくわからない）<br/>回避法:サーバOSシャットダウン時は「systemctl stop minecraft_server」→「shutdown -r now」の順序で実行する。</li>
+<li>RHEL系環境でSELinuxの無効化が必要。</li>
 <li>スクリプト実行時に不要なメッセージが表示される。</li>
 <li>Minecraft 1.14以降craftbukkitをインストールできない。</li>
-<li>RHEL系環境でSELinuxの無効化が必要。</li>
+
 </ol>
 <h3>今後やりたい事</h3>
 <ol>
-<li>Debian等APT系だがUbuntuとパッケージ名の違うディストリビューションへの対応</li>
+<li>sudoの排除</li>
+<li>screenの排除</li>
 <li>インストーラの一本化</li>
 </ol>

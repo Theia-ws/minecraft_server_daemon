@@ -11,6 +11,7 @@ INSTALL_SOURCE_DIR="./"
 UNIT_DIR="/etc/rc.d/init.d"
 INSTALLD_UNIT_FILENAME="${MINECRAFT_SERVER_SERVICE_NAME}"
 SERVICE_CONFIG_DIR="/etc/sysconfig"
+INIT_SYS_NAME="initd"
 SERVICE_LIB_DIR="/usr/local/lib/${MINECRAFT_SERVER_SERVICE_NAME}"
 BIN_DIR="/usr/local/bin"
 
@@ -36,10 +37,10 @@ fi
 make_execute_user
 
 replace_env_val common
-replace_env_val initd
-install_unit initd
+replace_env_val ${INIT_SYS_NAME}
+install_unit ${INIT_SYS_NAME}
 install_config
-install_lib initd
+install_lib ${INIT_SYS_NAME}
 make_server_root
 clean
 
