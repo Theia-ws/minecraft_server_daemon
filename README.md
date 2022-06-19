@@ -85,7 +85,7 @@
 <p>FreeBSDの場合「./install.freebsd.sh」、FreeBSD ZFSの場合「./install.freebsd.zfs.sh」、Initdの場合「install.initd.sh」、Systemdの場合「install.systemd.sh」を実行する。</p>
 <h3>既知の問題点</h3>
 <ol>
-<li>Systemcdをインストールし、OSを再起動した場合に予告メッセージを表示せずに終了する。<br/>回避法:サーバOS再起動時に「systemctl stop minecraft_server」→「shutdown -r now」と実行する。</li>
+<li>Alma LinuxでSystemcdをインストールし、OSを再起動した場合に予告メッセージを表示せずに終了する。（同じSystemdを使うUbuntuでは起きないのでよくわからない）<br/>回避法:サーバOS再起動時に「systemctl stop minecraft_server」→「shutdown -r now」と実行する。</li>
 <li>スクリプト実行時に不要なメッセージが表示される。</li>
 <li>Minecraft 1.14以降craftbukkitをインストールできない。</li>
 <li>RHEL系環境でSELinux飲む効果が必要。</li>
