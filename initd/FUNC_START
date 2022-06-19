@@ -8,7 +8,7 @@ FUNC_START(){
 	FUNC_EXECCOMMAND '' >& /dev/null
 	if [ $? -eq 1 ]; then
 		cd ${MINECRAFT_SERVER_ROOT}
-		${SCREEN_PATH} -AmdS ${SCREEN_NAME} sudo -u ${MINECRAFT_SERVER_EXECUTE_USER} ${JVM_PATH} -server -Xms${MIN_MEMORY} -Xmx${MAX_MEMORY} -jar ${JAR_PATH} nogui
+		[[[SCREEN_PATH]]] -AmdS ${SCREEN_NAME} sudo -u ${MINECRAFT_SERVER_EXECUTE_USER} [[[JVM_PATH]]] -server -Xms${MIN_MEMORY} -Xmx${MAX_MEMORY} -jar ${JAR_PATH} nogui
 		echo_success
 		touch /var/lock/subsys/${MINECRAFT_SERVER_SERVICE_NAME}
 	else

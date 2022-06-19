@@ -5,6 +5,7 @@ execute_paramator="$@"
 cd $(dirname $0)
 
 . ./config
+. ./common/FUNC_COMMON
 
 INSTALL_SOURCE_DIR="./"
 UNIT_DIR="/etc/rc.d"
@@ -12,26 +13,6 @@ INSTALLD_UNIT_FILENAME="${MINECRAFT_SERVER_SERVICE_NAME}"
 SERVICE_CONFIG_DIR="/usr/local/etc/${MINECRAFT_SERVER_SERVICE_NAME}"
 SERVICE_LIB_DIR="/usr/local/lib/${MINECRAFT_SERVER_SERVICE_NAME}"
 BIN_DIR="/usr/local/bin"
-
-check_can_install(){
-	endcode=0
-	switch_execute_user "Sudo is required to install. Please input your account password." "Need root parmissions for install." ${execute_file_path} ${execute_paramator}
-	if [ $? -ne 0 ]; then
-		endcode=1
-	fi
-	return ${endcode}
-}
-
-install_dependent_package(){
-	which ${CURL_PATH} > /dev/null 2>&1
-	[ $? -ne 0 ] && pkg install -y curl
-	which git > /dev/null 2>&1
-	[ $? -ne 0 ] && pkg install -y git
-	which ${JVM_PATH} > /dev/null 2>&1
-	[ $? -ne 0 ] && pkg install -y openjdk17-jre
-	which ${SCREEN_PATH} > /dev/null 2>&1
-	[ $? -ne 0 ] && pkg install -y screen
-}
 
 cild_file_sed(){
 	grep -l "[[[${2}]]]" ${INSTALL_SOURCE_DIR}${1}/* | xargs sed -i "" -e "s/\[\[\[${2}\]\]\]/${3}/g"
@@ -49,7 +30,11 @@ if [ $? -eq 1 ]; then
 	exit 1
 fi
 install_dependent_package
+if [ $? -eq 1 ]; then
+	exit 1
+fi
 make_execute_user
+
 replace_env_val common
 replace_env_val freebsd
 install_unit freebsd

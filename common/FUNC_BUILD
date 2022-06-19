@@ -18,8 +18,8 @@ FUNC_SPIGOT_BUILD(){
 	RESULT=0
 	mkdir -p /tmp/minecraft_server/build/
 	cd /tmp/minecraft_server/build/
-	${CURL_PATH} https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar -o /tmp/minecraft_server/build/BuildTools.jar
-	java -jar /tmp/minecraft_server/build/BuildTools.jar --rev ${SERVER_REVISION}
+	[[[CURL_PATH]]] https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar -o /tmp/minecraft_server/build/BuildTools.jar
+	[[[JVM_PATH]]] -server -Xms${MIN_MEMORY} -Xmx${MAX_MEMORY} -jar /tmp/minecraft_server/build/BuildTools.jar --rev ${SERVER_REVISION}
 	FUNC_JAR_REPLACE "/tmp/minecraft_server/build/${SERVER_TYPE}-*jar"
 	RESULT=$?
 	if [ ${RESULT} -ne 0 ]; then

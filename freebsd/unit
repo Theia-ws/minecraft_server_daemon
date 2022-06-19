@@ -14,8 +14,8 @@ rcvar="[[[MINECRAFT_SERVER_SERVICE_NAME]]]_enable"
 [[[MINECRAFT_SERVER_SERVICE_NAME]]]_group=${MINECRAFT_SERVER_EXECUTE_GROUP}
 [[[MINECRAFT_SERVER_SERVICE_NAME]]]_chdir=${MINECRAFT_SERVER_ROOT}
 
-command=${SCREEN_PATH}
-command_args="-AmdS ${SCREEN_NAME} ${JVM_PATH} -server -Xms${MIN_MEMORY} -Xmx${MAX_MEMORY} -jar ${JAR_PATH} nogui"
+command=[[[SCREEN_PATH]]]
+command_args="-AmdS ${SCREEN_NAME} [[[JVM_PATH]]] -server -Xms${MIN_MEMORY} -Xmx${MAX_MEMORY} -jar ${JAR_PATH} nogui"
 
 stop_cmd="FUNC_STOP"
 

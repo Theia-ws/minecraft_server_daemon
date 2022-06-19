@@ -10,26 +10,26 @@
 <p>凡例<br/>
 ✔:自動インストール　❌:ユーザによるインストールが必要</p>
 <table>
-<tr><th></th><th>FreeBSD</th><th>FreeBSD<br/>ZFS(推奨)</th><th>Initd</th><th>Systemd</th></tr>
-<tr><td>curl</td><td>✔</td><td>✔</td><td>❌</td><td>❌</td></tr>
-<tr><td>git</td><td>✔</td><td>✔</td><td>❌</td><td>❌</td></tr>
-<tr><td>jre17</td><td>✔</td><td>✔</td><td>❌</td><td>❌</td></tr>
-<tr><td>screen</td><td>✔</td><td>✔</td><td>❌</td><td>❌</td></tr>
+<tr><th></th><th>FreeBSD</th><th>FreeBSD<br/>ZFS(推奨)</th><th>Systemd</th><th>Systemd</th><th>Initd</th></tr>
+<tr><td>curl</td><td>✔</td><td>✔</td><td>✔</td><td>✔</td></tr>
+<tr><td>git</td><td>✔</td><td>✔</td><td>✔</td><td>✔</td></tr>
+<tr><td>jre17</td><td>✔</td><td>✔</td><td>✔</td><td>✔</td></tr>
+<tr><td>screen</td><td>✔</td><td>✔</td><td>✔</td><td>✔</td></tr>
 </table>
 <h3>実行ユーザ</h3>
 <p>このデーモンはroot権限により起動処理が行われ、サーバ本体はユーザが設定ファイルで指定したユーザによって実行する。</p>
 <p>凡例<br/>
 ✔:自動作成　❌:ユーザによる作成が必要</p>
 <table>
-<tr><th></th><th>FreeBSD</th><th>FreeBSD<br/>ZFS(推奨)</th><th>Initd</th><th>Systemd</th></tr>
+<tr><th></th><th>FreeBSD</th><th>FreeBSD<br/>ZFS(推奨)</th><th>Systemd</th><th>Initd</th></tr>
 <tr><td>デフォルトユーザ名</td><td>minecraft</td><td>minecraft</td><td>minecraft</td><td>minecraft</td></tr>
-<tr><td>自動作成</td><td>✔</td><td>✔</td><td>❌</td><td>❌</td></tr>
+<tr><td>自動作成</td><td>✔</td><td>✔</td><td>✔</td><td>✔</td></tr>
 </table>
 <h3>対応コマンド</h3>
 <p>凡例<br/>
 ✔:対応　❌:非対応</p>
 <table>
-<tr><th></th><th>FreeBSD</th><th>FreeBSD<br/>ZFS<br/>(推奨)</th><th>Initd</th><th>Systemd</th><th>機能説明</th></tr>
+<tr><th></th><th>FreeBSD</th><th>FreeBSD<br/>ZFS<br/>(推奨)</th><th>Systemd</th><th>Initd</th><th>機能説明</th></tr>
 <tr><td>backup</td><td>❌</td><td>✔</td><td>❌</td><td>❌</td><td>最新のボリュームスナップショットからバックアップファイルを作成します。</td></tr>
 <tr><td>build</td><td>✔</td><td>✔</td><td>✔</td><td>✔</td><td>サーバとして使用するBukkit、又は、Spigotをビルドします。</td></tr>
 <tr><td>command</td><td>✔</td><td>✔</td><td>✔</td><td>✔</td><td>Minecraftサーバのサーバコンソールでコマンドを実行します。</td></tr>
@@ -42,19 +42,14 @@
 </table>
 <h3>動作確認OS</h3>
 <table>
-<tr><th>FreeBSD</th><th>FreeBSD<br/>ZFS(推奨)</th><th>Initd</th><th>Systemd</th></tr>
-<tr><td>FreeBSD 13</td><td>FreeBSD 13</td><td>CentOS 6</td><td>CentOS 7</td></tr>
+<tr><th>FreeBSD</th><th>FreeBSD<br/>ZFS(推奨)</th><th>Systemd</th><th>Initd</th></tr>
+<tr><td>FreeBSD 13</td><td>FreeBSD 13</td><td>Alma Linux 9(SELnuxの無効化が必要)<br />Utuntu Server 20.4</td><td>No Test</td></tr>
 </table>
 <h2>インストール手順</h2>
 <h3>事前準備</h3>
-<p>この手順はFreeBSD、及び、FreeBSD ZFSの場合インストーラによって自動的に行われます。Initd、又は、Systemdの場合に、必要となります。</p>
+<p>この手順はSELinuxがインストールされている環境で必要になります。</p>
 <ol>
-<li>curlをインストールします。</li>
-<li>gitをインストールします。</li>
-<li>gitにパスを通します。</li>
-<li>jre17をインストールします。</li>
-<li>screenをインストールします。</li>
-<li>サーバを実行するユーザを作成します。(初期値はminecraftです。)</li>
+<li>SELinuxを無効にします。</li>
 </ol>
 <h3>configの設定</h3>
 <p>インストールフォルダ直下のconfigに設定します。</p>
@@ -63,10 +58,10 @@
 <li>MINECRAFT_SERVER_EXECUTE_USER<br/>Minecraftサーバを実行するユーザ名を指定します。Initd、又は、Systemdをインストールする場合、事前準備で用意したユーザ名を指定してください。</li>
 <li>MINECRAFT_SERVER_EXECUTE_GROUP<br/>Minecraftサーバを実行するグループ名を指定します。Initd、又は、Systemdをインストールする場合、事前準備で用意したユーザのグループ名を指定してください。</li>
 <li>MINECRAFT_SERVER_ROOT<br/>サーバ実行時のルートディレクトリを指定します。このディレクトリ配下にWorldやホワイトリストが保存されます。</li>
-<li>CURL_PATH<br/>curlコマンドのパスを指定します。</li>
-<li>SCREEN_PATH<br/>screenコマンドのパスを指定します。</li>
+<li>CURL_PATH<br/>curlコマンドのパスを指定します。(ディストリビューション付属のものを使う場合は不要)</li>
+<li>SCREEN_PATH<br/>screenコマンドのパスを指定します。(ディストリビューション付属のものを使う場合は不要)</li>
 <li>SCREEN_NAME<br/>Minecraftサーバを実行するスクリーン名を指定します。</li>
-<li>JVM_PATH<br/>javaコマンドのパスを指定します。</li>
+<li>JVM_PATH<br/>javaコマンドのパスを指定します。(ディストリビューション付属のものを使う場合は不要)</li>
 <li>MIN_MEMORY<br/>Minecraftサーバを実行するJVMに割り当てる最小メモリを指定します。</li>
 <li>MAX_MEMORY<br/>Minecraftサーバを実行するJVMに割り当てる最大メモリを指定します。</li>
 <li>JAR_PATH<br/>Minecraftサーバとして実行するJARファイルのパスを指定します。ビルド機能によってこのパスに配置されたJARファイルを更新します。</li>
@@ -93,4 +88,10 @@
 <li>Systemcdをインストールし、OSを再起動した場合に予告メッセージを表示せずに終了する。<br/>回避法:サーバOS再起動時に「systemctl stop minecraft_server」→「shutdown -r now」と実行する。</li>
 <li>スクリプト実行時に不要なメッセージが表示される。</li>
 <li>Minecraft 1.14以降craftbukkitをインストールできない。</li>
+<li>RHEL系環境でSELinux飲む効果が必要。</li>
+</ol>
+<h3>今後やりたい事</h3>
+<ol>
+<li>Debian等APT系だがUbuntuとパッケージ名の違うディストリビューションへの対応</li>
+<li>インストーラの一本化</li>
 </ol>

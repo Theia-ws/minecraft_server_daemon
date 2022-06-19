@@ -4,7 +4,7 @@ After=syslog.target network.target
 
 [Service]
 Type=forking
-Restart=always
+Restart=no
 EnvironmentFile=[[[SERVICE_CONFIG_DIR]]]/[[[MINECRAFT_SERVER_SERVICE_NAME]]]
 ExecStart=[[[SERVICE_LIB_DIR]]]/EXEC_START
 ExecReload=[[[SERVICE_LIB_DIR]]]/EXEC_RELOAD
