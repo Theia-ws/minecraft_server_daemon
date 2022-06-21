@@ -10,7 +10,7 @@
 <p>凡例<br/>
 ✔:自動インストール　❌:ユーザによるインストールが必要　➖：依存なし</p>
 <table>
-<tr><th></th><th>FreeBSD</th><th>FreeBSD<br/>ZFS(推奨)</th><th>Systemd</th><th>Systemd</th><th>Initd</th></tr>
+<tr><th></th><th>FreeBSD</th><th>FreeBSD<br/>ZFS(推奨)</th><th>Systemd</th><th>Initd</th></tr>
 <tr><td>curl</td><td>✔</td><td>✔</td><td>✔</td><td>✔</td></tr>
 <tr><td>git</td><td>✔</td><td>✔</td><td>✔</td><td>✔</td></tr>
 <tr><td>jre17</td><td>✔</td><td>✔</td><td>✔</td><td>✔</td></tr>
