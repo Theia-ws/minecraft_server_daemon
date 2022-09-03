@@ -33,11 +33,11 @@ MAX_MEMORY="4096M"
 #JARファイルパス
 JAR_PATH="/usr/local/lib/minecraft_server/minecraft_server.jar"
 
-#サーバタイプ(例:craftbukkit,spigot)
+#サーバタイプ(例:craftbukkit,spigot,papermc)
 SERVER_TYPE="spigot"
 
 #サーバーのバージョン
-SERVER_REVISION="1.19"
+SERVER_REVISION="1.19.2"
 
 #終了ウェイトタイム
 DEFAULT_STOP_WATE_TIME=60

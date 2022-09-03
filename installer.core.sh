@@ -40,6 +40,12 @@ install_dependent_package(){
 			[ $? -ne 0 ] && return 1
 		fi
 		
+		which jq > /dev/null 2>&1
+		if [ $? -ne 0 ]; then
+			apt-get install -y jq
+			[ $? -ne 0 ] && return 1
+		fi
+		
 		which ${JVM_PATH} > /dev/null 2>&1
 		if [ $? -ne 0 ]; then
 			apt-get install -y openjdk-17-jre-headless
@@ -71,6 +77,12 @@ install_dependent_package(){
 			[ $? -ne 0 ] && return 1
 		fi
 		
+		which jq > /dev/null 2>&1
+		if [ $? -ne 0 ]; then
+			pkg install -y jq
+			[ $? -ne 0 ] && return 1
+		fi
+		
 		which ${JVM_PATH} > /dev/null 2>&1
 		if [ $? -ne 0 ]; then
 			pkg install -y openjdk17-jre
@@ -90,6 +102,12 @@ install_dependent_package(){
 	which yum > /dev/null 2>&1
 	if [ $? -eq 0 ]; then
 		
+		which sudo > /dev/null 2>&1
+		if [ $? -ne 0 ]; then
+			apt-get install -y sudo
+			[ $? -ne 0 ] && return 1
+		fi
+		
 		which ${CURL_PATH} > /dev/null 2>&1
 		if [ $? -ne 0 ]; then
 			yum install -y curl
@@ -99,6 +117,12 @@ install_dependent_package(){
 		which git > /dev/null 2>&1
 		if [ $? -ne 0 ]; then
 			yum install -y git
+			[ $? -ne 0 ] && return 1
+		fi
+		
+		which jq > /dev/null 2>&1
+		if [ $? -ne 0 ]; then
+			yum install -y jq
 			[ $? -ne 0 ] && return 1
 		fi
 		
@@ -180,4 +204,10 @@ make_server_root(){
 clean(){
 	${SERVICE_LIB_DIR}/${MINECRAFT_SERVER_SERVICE_NAME} build
 	rm -rf `pwd`
+	cd ../
+}
+
+service_start(){
+	${BIN_DIR}/${MINECRAFT_SERVER_SERVICE_NAME} enable
+	${BIN_DIR}/${MINECRAFT_SERVER_SERVICE_NAME} start
 }

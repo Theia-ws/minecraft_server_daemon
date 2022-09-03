@@ -32,7 +32,7 @@
 <table>
 <tr><th></th><th>FreeBSD</th><th>FreeBSD<br/>ZFS<br/>(推奨)</th><th>Systemd</th><th>Initd</th><th>機能説明</th></tr>
 <tr><td>backup</td><td>❌</td><td>✔</td><td>❌</td><td>❌</td><td>最新のボリュームスナップショットからバックアップファイルを作成します。</td></tr>
-<tr><td>build</td><td>✔</td><td>✔</td><td>✔</td><td>✔</td><td>サーバとして使用するBukkit、又は、Spigotをビルドします。</td></tr>
+<tr><td>build</td><td>✔</td><td>✔</td><td>✔</td><td>✔</td><td>サーバとして使用するBukkit、Spigot、又は、PaperMCをビルドします。</td></tr>
 <tr><td>command</td><td>✔</td><td>✔</td><td>✔</td><td>✔</td><td>Minecraftサーバのサーバコンソールでコマンドを実行します。</td></tr>
 <tr><td>remove</td><td>✔</td><td>✔</td><td>✔</td><td>✔</td><td>デーモンのアンインストールを行います。<br/>ワールドデータは削除しません。</td></tr>
 <tr><td>restart</td><td>✔</td><td>✔</td><td>✔</td><td>✔</td><td>デーモンを再起動します。</td></tr>
@@ -66,7 +66,7 @@
 <li>MIN_MEMORY<br/>Minecraftサーバを実行するJVMに割り当てる最小メモリを指定します。</li>
 <li>MAX_MEMORY<br/>Minecraftサーバを実行するJVMに割り当てる最大メモリを指定します。</li>
 <li>JAR_PATH<br/>Minecraftサーバとして実行するJARファイルのパスを指定します。ビルド機能によってこのパスに配置されたJARファイルを更新します。</li>
-<li>SERVER_TYPE<br/>使用するサーバタイプを指定します。craftbukkit、又は、spigotが設定できます。</li>
+<li>SERVER_TYPE<br/>使用するサーバタイプを指定します。craftbukkit、spigot、又は、papermcが設定できます。</li>
 <li>SERVER_REVISION<br/>Minecraftサーバーのリビジョンを指定します。このバージョンに基づいて、ビルド機能がサーバをビルドします。</li>
 <li>DEFAULT_STOP_WATE_TIME<br/>MinecraftサーバにSTOPコマンドを送る際に予告メッセージを送る時間を指定します。停止するまでの残り時間が30秒の倍数の時間になった時、及び、10秒以下になった時に予告メッセージを表示します。</li>
 <li>eula<br/>By changing the setting below to TRUE you are indicating your agreement to our EULA (<a href="https://account.mojang.com/documents/minecraft_eula">https://account.mojang.com/documents/minecraft_eula</a>).<br/>MojangのEULAに同意しtrueに設定する事でインストール直後に自動的にサーバが起動します。</li>
