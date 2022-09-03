@@ -45,5 +45,4 @@ make_server_root
 clean
 
 chkconfig --add ${MINECRAFT_SERVER_SERVICE_NAME}
-chkconfig ${MINECRAFT_SERVER_SERVICE_NAME} on
-service ${MINECRAFT_SERVER_SERVICE_NAME} start
+service_start

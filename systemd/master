@@ -24,6 +24,12 @@ build)
 command)
 	FUNC_EXECCOMMAND "$2"
 ;;
+disable)
+	systemctl disable ${MINECRAFT_SERVER_SERVICE_NAME}
+;;
+enable)
+	systemctl enable ${MINECRAFT_SERVER_SERVICE_NAME}
+;;
 remove)
 	FUNC_REMOVE
 ;;
@@ -41,7 +47,7 @@ stop)
 	systemctl stop ${MINECRAFT_SERVER_SERVICE_NAME}
 ;;
 *)
-echo $"Usage: $0 {build|command|restart|start|stop}"
+echo $"Usage: $0 {build|command|disable|enable|restart|start|stop}"
 exit 1
 esac
 exit 0

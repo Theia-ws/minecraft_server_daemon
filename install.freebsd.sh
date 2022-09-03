@@ -44,5 +44,4 @@ install_lib ${INIT_SYS_NAME}
 make_server_root
 clean
 
-echo "${MINECRAFT_SERVER_SERVICE_NAME}_enable=\"YES\"" >> /etc/rc.conf
-service ${MINECRAFT_SERVER_SERVICE_NAME} start
+service_start

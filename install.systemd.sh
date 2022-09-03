@@ -45,5 +45,4 @@ make_server_root
 clean
 
 systemctl daemon-reload
-systemctl enable ${MINECRAFT_SERVER_SERVICE_NAME}
-systemctl start ${MINECRAFT_SERVER_SERVICE_NAME}
+service_start

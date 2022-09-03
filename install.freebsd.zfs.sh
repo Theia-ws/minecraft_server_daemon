@@ -82,5 +82,4 @@ make_zfs_volume
 make_backup_dir
 clean
 
-echo "${MINECRAFT_SERVER_SERVICE_NAME}_enable=\"YES\"" >> /etc/rc.conf
-service ${MINECRAFT_SERVER_SERVICE_NAME} start
+service_start

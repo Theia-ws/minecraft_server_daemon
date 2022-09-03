@@ -29,6 +29,12 @@ build)
 command)
 	FUNC_EXECCOMMAND "$2"
 ;;
+disable)
+	sed -i "" -e "/[[[MINECRAFT_SERVER_SERVICE_NAME]]]_enable=/d" /etc/rc.conf
+;;
+enable)
+	echo "${MINECRAFT_SERVER_SERVICE_NAME}_enable=\"YES\"" >> /etc/rc.conf
+;;
 remove)
 	FUNC_REMOVE "$2"
 ;;
@@ -49,7 +55,7 @@ stop)
 	service ${MINECRAFT_SERVER_SERVICE_NAME} stop
 ;;
 *)
-echo $"Usage: $0 {backup|build|command|restart|snapshot|start|stop}"
+echo $"Usage: $0 {backup|build|command|disable|enable|restart|snapshot|start|stop}"
 exit 1
 esac
 exit 0
