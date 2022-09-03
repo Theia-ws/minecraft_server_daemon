@@ -6,7 +6,6 @@
 . [[[SERVICE_LIB_DIR]]]/FUNC_COMMON
 . [[[SERVICE_LIB_DIR]]]/FUNC_START
 . [[[SERVICE_LIB_DIR]]]/FUNC_STOP
-. [[[SERVICE_LIB_DIR]]]/FUNC_RESTART
 . [[[SERVICE_LIB_DIR]]]/FUNC_RELOAD
 
 execute_file_path="$(cd $(dirname $0) && pwd)/$(basename $0)"
@@ -28,7 +27,8 @@ stop)
 	FUNC_STOP
 ;;
 restart)
-	FUNC_RESTART
+	FUNC_STOP
+	FUNC_START
 ;;
 status)
 	status -l ${MINECRAFT_SERVER_SERVICE_NAME} ${MINECRAFT_SERVER_SERVICE_NAME}
