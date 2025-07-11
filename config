@@ -34,7 +34,7 @@ MAX_MEMORY="4096M"
 JAR_PATH="/usr/local/lib/minecraft_server/minecraft_server.jar"
 
 #サーバタイプ(例:craftbukkit,spigot,papermc)
-SERVER_TYPE="spigot"
+SERVER_TYPE="papermc"
 
 #サーバーのバージョン
 SERVER_REVISION="1.19.2"

@@ -21,7 +21,7 @@ FUNC_SPIGOT_BUILD(){
 	RESULT=0
 	mkdir -p /tmp/minecraft_server/build/
 	cd /tmp/minecraft_server/build/
-	[[[CURL_PATH]]] https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar -o /tmp/minecraft_server/build/BuildTools.jar
+	[[[CURL_PATH]]] -fsSL https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar -o /tmp/minecraft_server/build/BuildTools.jar
 	[[[JVM_PATH]]] -server -jar /tmp/minecraft_server/build/BuildTools.jar --rev ${SERVER_REVISION}
 	FUNC_JAR_REPLACE "/tmp/minecraft_server/build/${SERVER_TYPE}-*jar"
 	RESULT=$?
@@ -41,12 +41,17 @@ FUNC_DOWNLOAD_PAPERMC(){
 	[[[CURL_PATH]]] -fsSL "https://papermc.io/api/v2/projects/paper/versions/${SERVER_REVISION}/builds/${build_no}/downloads/${file_name}" -H  "accept: application/java-archive" -o /tmp/minecraft_server/build/${file_name}
 	FUNC_JAR_REPLACE "/tmp/minecraft_server/build/${file_name}"
 	RESULT=$?
-	if [ ${RESULT} -ne 0 ]; then
-		FUNC_JAR_REPLACE "${1}"
-		RESULT=$?
-	fi
 	rm -rf /tmp/minecraft_server/build
 	return ${RESULT}
+}
+
+FUNC_DOWNLOAD_GEYSER(){
+	[[[CURL_PATH]]] -fsSL https://ci.opencollab.dev/job/GeyserMC/job/Geyser/job/master/lastSuccessfulBuild/artifact/bootstrap/spigot/build/libs/Geyser-Spigot.jar -o /tmp/minecraft_server/build/
+	[[[CURL_PATH]]] -fsSL https://ci.opencollab.dev/job/GeyserMC/job/Floodgate/job/master/lastSuccessfulBuild/artifact/spigot/build/libs/floodgate-spigot.jar -o /tmp/minecraft_server/build/
+	[[[CURL_PATH]]] -fsSL https://github.com/Camotoy/GeyserSkinManager/releases/latest/download/GeyserSkinManager-Spigot.jar -o /tmp/minecraft_server/build/
+	XX_FUNC_JAR_REPLACE /tmp/minecraft_server/build/Geyser-Spigot.jar
+	XX_FUNC_JAR_REPLACE /tmp/minecraft_server/build/GeyserSkinManager-Spigot.jar
+	XX_FUNC_JAR_REPLACE /tmp/minecraft_server/build/floodgate-spigot.jar
 }
 
 FUNC_JAR_REPLACE(){
