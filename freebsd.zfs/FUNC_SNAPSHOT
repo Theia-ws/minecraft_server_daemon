@@ -12,14 +12,14 @@ FUNC_SNAPSHOT(){
 		sleep ${SAVE_WAITE}
 	fi
 	
-	loopend=`SNAPSHOT_TARGET_VOLUME__LOOPEND`
-	for index in `seq 0 ${loopend}`; do
-		volume=`SNAPSHOT_TARGET_VOLUME__GET_NAME $index`
-		
-		zfs snapshot ${volume}@$(date -u +'%Y%m%dT%H%M%SZ')
-		
-		for snapshot in $(`zfs list -H -o name -t snapshot -r ${volume} | sort -r | tail -n+${MAX_NUMBER_OF_SNAPSHOT}`); do
-			zfs destroy ${snapshot}
+	loopend=$(SNAPSHOT_TARGET_VOLUME__LOOPEND)
+	for index in $(seq 0 "${loopend}"); do
+		volume=$(SNAPSHOT_TARGET_VOLUME__GET_NAME "$index")
+        
+		zfs snapshot "${volume}@$(date -u +'%Y%m%dT%H%M%SZ')"
+        
+		for snapshot in $(zfs list -H -o name -t snapshot -r "${volume}" | sort -r | tail -n+${MAX_NUMBER_OF_SNAPSHOT}); do
+			zfs destroy "${snapshot}"
 		done
 		
 	done

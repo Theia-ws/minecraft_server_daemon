@@ -36,10 +36,13 @@ FUNC_SPIGOT_BUILD(){
 FUNC_DOWNLOAD_PAPERMC(){
 	mkdir -p /tmp/minecraft_server/build
 
-	build_no=`[[[CURL_PATH]]] -fsSL "https://papermc.io/api/v2/projects/paper/versions/${SERVER_REVISION}" -H  "accept: application/json" | jq '.builds[-1]'`
-	file_name=`[[[CURL_PATH]]] -fsSL "https://papermc.io/api/v2/projects/paper/versions/${SERVER_REVISION}/builds/${build_no}" -H  "accept: application/json" | jq -r '.downloads.application.name'`
-	[[[CURL_PATH]]] -fsSL "https://papermc.io/api/v2/projects/paper/versions/${SERVER_REVISION}/builds/${build_no}/downloads/${file_name}" -H  "accept: application/java-archive" -o /tmp/minecraft_server/build/${file_name}
-	FUNC_JAR_REPLACE "/tmp/minecraft_server/build/${file_name}"
+	[[[CURL_PATH]]] -fsSL "https://fill.papermc.io/v3/projects/paper/versions/${SERVER_REVISION}/builds/latest" -H  "accept: application/json" | jq -r '.downloads."server:default".name, .downloads."server:default".url' | {
+		IFS= read -r file_name
+		IFS= read -r url
+		[[[CURL_PATH]]] -fsSL "${url}" -H  "accept: application/java-archive" -o /tmp/minecraft_server/build/${file_name}
+		FUNC_JAR_REPLACE "/tmp/minecraft_server/build/${file_name}"
+	}
+	
 	RESULT=$?
 	rm -rf /tmp/minecraft_server/build
 	return ${RESULT}

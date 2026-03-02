@@ -12,7 +12,7 @@ FUNC_REMOVE(){
 	if [ "${1}" = "dppkg" ]; then
 		pkg delete -y screen
 		pkg delete -y git
-		pkg delete -y openjdk17-jre
+		pkg delete -y openjdk21-jre
 		pkg delete -y curl
 		pkg autoremove -y
 	fi

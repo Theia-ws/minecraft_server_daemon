@@ -13,46 +13,46 @@ check_can_install(){
 
 install_dependent_package(){
 	
-	[ -z ${CURL_PATH} ] && CURL_PATH=`which curl`
-	[ -z ${JVM_PATH} ] && JVM_PATH=`which java`
-	[ -z ${SCREEN_PATH} ] && SCREEN_PATH=`which screen`
+	[ -z ${CURL_PATH} ] && CURL_PATH=$(command -v "curl" 2>/dev/null || echo "")
+	[ -z ${JVM_PATH} ] && JVM_PATH=$(command -v "java" 2>/dev/null || echo "")
+	[ -z ${SCREEN_PATH} ] && SCREEN_PATH=$(command -v "screen" 2>/dev/null || echo "")
 	
-	which apt-get > /dev/null 2>&1
+	command -v "apt-get" > /dev/null 2>&1
 	if [ $? -eq 0 ]; then
 		
 		apt-get update
 		
-		which sudo > /dev/null 2>&1
+		command -v "sudo" > /dev/null 2>&1
 		if [ $? -ne 0 ]; then
 			apt-get install -y sudo
 			[ $? -ne 0 ] && return 1
 		fi
 		
-		which ${CURL_PATH} > /dev/null 2>&1
+		command -v "${CURL_PATH}" > /dev/null 2>&1
 		if [ $? -ne 0 ]; then
 			apt-get install -y curl
 			[ $? -ne 0 ] && return 1
 		fi
 		
-		which git > /dev/null 2>&1
+		command -v "git" > /dev/null 2>&1
 		if [ $? -ne 0 ]; then
 			apt-get install -y git
 			[ $? -ne 0 ] && return 1
 		fi
 		
-		which jq > /dev/null 2>&1
+		command -v "jq" > /dev/null 2>&1
 		if [ $? -ne 0 ]; then
 			apt-get install -y jq
 			[ $? -ne 0 ] && return 1
 		fi
 		
-		which ${JVM_PATH} > /dev/null 2>&1
+		command -v "${JVM_PATH}" > /dev/null 2>&1
 		if [ $? -ne 0 ]; then
-			apt-get install -y openjdk-17-jre-headless
+			apt-get install -y openjdk-21-jre-headless
 			[ $? -ne 0 ] && return 1
 		fi
 		
-		which ${SCREEN_PATH} > /dev/null 2>&1
+		command -v "${SCREEN_PATH}" > /dev/null 2>&1
 		if [ $? -ne 0 ]; then
 			apt-get install -y screen
 			[ $? -ne 0 ] && return 1
@@ -62,34 +62,34 @@ install_dependent_package(){
 		
 	fi
 	
-	which pkg > /dev/null 2>&1
+	command -v "pkg" > /dev/null 2>&1
 	if [ $? -eq 0 ]; then
 		
-		which ${CURL_PATH} > /dev/null 2>&1
+		command -v "${CURL_PATH}" > /dev/null 2>&1
 		if [ $? -ne 0 ]; then
 			pkg install -y curl
 			[ $? -ne 0 ] && return 1
 		fi
 		
-		which git > /dev/null 2>&1
+		command -v "git" > /dev/null 2>&1
 		if [ $? -ne 0 ]; then
 			pkg install -y git
 			[ $? -ne 0 ] && return 1
 		fi
 		
-		which jq > /dev/null 2>&1
+		command -v "jq" > /dev/null 2>&1
 		if [ $? -ne 0 ]; then
 			pkg install -y jq
 			[ $? -ne 0 ] && return 1
 		fi
 		
-		which ${JVM_PATH} > /dev/null 2>&1
+		command -v "${JVM_PATH}" > /dev/null 2>&1
 		if [ $? -ne 0 ]; then
-			pkg install -y openjdk17-jre
+			pkg install -y openjdk21-jre
 			[ $? -ne 0 ] && return 1
 		fi
 		
-		which ${SCREEN_PATH} > /dev/null 2>&1
+		command -v "${SCREEN_PATH}" > /dev/null 2>&1
 		if [ $? -ne 0 ]; then
 			pkg install -y screen
 			[ $? -ne 0 ] && return 1
@@ -99,40 +99,40 @@ install_dependent_package(){
 		
 	fi
 	
-	which yum > /dev/null 2>&1
+	command -v "yum" > /dev/null 2>&1
 	if [ $? -eq 0 ]; then
 		
-		which sudo > /dev/null 2>&1
+		command -v "sudo" > /dev/null 2>&1
 		if [ $? -ne 0 ]; then
 			apt-get install -y sudo
 			[ $? -ne 0 ] && return 1
 		fi
 		
-		which ${CURL_PATH} > /dev/null 2>&1
+		command -v "${CURL_PATH}" > /dev/null 2>&1
 		if [ $? -ne 0 ]; then
 			yum install -y curl
 			[ $? -ne 0 ] && return 1
 		fi
 		
-		which git > /dev/null 2>&1
+		command -v "git" > /dev/null 2>&1
 		if [ $? -ne 0 ]; then
 			yum install -y git
 			[ $? -ne 0 ] && return 1
 		fi
 		
-		which jq > /dev/null 2>&1
+		command -v "jq" > /dev/null 2>&1
 		if [ $? -ne 0 ]; then
 			yum install -y jq
 			[ $? -ne 0 ] && return 1
 		fi
 		
-		which ${JVM_PATH} > /dev/null 2>&1
+		command -v "${JVM_PATH}" > /dev/null 2>&1
 		if [ $? -ne 0 ]; then
-			yum install -y java-17-openjdk-headless
+			yum install -y java-21-openjdk-headless
 			[ $? -ne 0 ] && return 1
 		fi
 		
-		which ${SCREEN_PATH} > /dev/null 2>&1
+		command -v "${SCREEN_PATH}" > /dev/null 2>&1
 		if [ $? -ne 0 ]; then
 			yum install -y epel-release
 			yum install -y screen
@@ -146,17 +146,17 @@ install_dependent_package(){
 }
 
 replace_env_val(){
-	SERVICE_CONFIG_DIR_SED=`echo ${SERVICE_CONFIG_DIR} | sed -e 's/\//\\\\\//g'`
-	SERVICE_LIB_DIR_SED=`echo ${SERVICE_LIB_DIR} | sed -e 's/\//\\\\\//g'`
-	UNIT_DIR_SED=`echo ${UNIT_DIR} | sed -e 's/\//\\\\\//g'`
-	BIN_DIR_SED=`echo ${BIN_DIR} | sed -e 's/\//\\\\\//g'`
+	SERVICE_CONFIG_DIR_SED=$(echo "${SERVICE_CONFIG_DIR}" | sed -e 's/\//\\\//g')
+	SERVICE_LIB_DIR_SED=$(echo "${SERVICE_LIB_DIR}" | sed -e 's/\//\\\//g')
+	UNIT_DIR_SED=$(echo "${UNIT_DIR}" | sed -e 's/\//\\\//g')
+	BIN_DIR_SED=$(echo "${BIN_DIR}" | sed -e 's/\//\\\//g')
 
-	[ -z ${CURL_PATH} ] && CURL_PATH=`which curl`
-	[ -z ${JVM_PATH} ] && JVM_PATH=`which java`
-	[ -z ${SCREEN_PATH} ] && SCREEN_PATH=`which screen`
-	CURL_PATH_SED=`echo ${CURL_PATH} | sed -e 's/\//\\\\\//g'`
-	JVM_PATH_SED=`echo ${JVM_PATH} | sed -e 's/\//\\\\\//g'`
-	SCREEN_PATH_SED=`echo ${SCREEN_PATH} | sed -e 's/\//\\\\\//g'`
+	[ -z ${CURL_PATH} ] && CURL_PATH=$(command -v "curl" 2>/dev/null || echo "")
+	[ -z ${JVM_PATH} ] && JVM_PATH=$(command -v "java" 2>/dev/null || echo "")
+	[ -z ${SCREEN_PATH} ] && SCREEN_PATH=$(command -v "screen" 2>/dev/null || echo "")
+	CURL_PATH_SED=$(echo "${CURL_PATH}" | sed -e 's/\//\\\//g')
+	JVM_PATH_SED=$(echo "${JVM_PATH}" | sed -e 's/\//\\\//g')
+	SCREEN_PATH_SED=$(echo "${SCREEN_PATH}" | sed -e 's/\//\\\//g')
 
 	cild_file_sed ${1} "SERVICE_CONFIG_DIR" ${SERVICE_CONFIG_DIR_SED}
 	cild_file_sed ${1} "MINECRAFT_SERVER_SERVICE_NAME" ${MINECRAFT_SERVER_SERVICE_NAME}
@@ -184,7 +184,10 @@ install_lib(){
 	copy_lib common
 	copy_lib ${1}
 	chmod 755 ${SERVICE_LIB_DIR}/*
-	[ ! -e ${BIN_DIR}/${MINECRAFT_SERVER_SERVICE_NAME} ] && ln -s ${SERVICE_LIB_DIR}/${MINECRAFT_SERVER_SERVICE_NAME} ${BIN_DIR}/${MINECRAFT_SERVER_SERVICE_NAME}
+	if [ -e ${BIN_DIR}/${MINECRAFT_SERVER_SERVICE_NAME} ]; then
+		unlink ${BIN_DIR}/${MINECRAFT_SERVER_SERVICE_NAME}
+	fi
+	ln -s ${SERVICE_LIB_DIR}/${MINECRAFT_SERVER_SERVICE_NAME} ${BIN_DIR}/${MINECRAFT_SERVER_SERVICE_NAME}
 }
 
 copy_lib(){
@@ -203,8 +206,6 @@ make_server_root(){
 
 clean(){
 	${SERVICE_LIB_DIR}/${MINECRAFT_SERVER_SERVICE_NAME} build
-	rm -rf `pwd`
-	cd ../
 }
 
 service_start(){

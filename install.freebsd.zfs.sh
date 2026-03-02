@@ -34,14 +34,14 @@ install_zfs_config(){
 
 make_zfs_volume(){
 	
-	loopend=`SNAPSHOT_TARGET_VOLUME__LOOPEND`
-	
-	for index in `seq 0 ${loopend}`; do
+	loopend=$(SNAPSHOT_TARGET_VOLUME__LOOPEND)
+    
+	for index in $(seq 0 "${loopend}"); do
 
-		volume=`SNAPSHOT_TARGET_VOLUME__GET_NAME $index`
-		mountpoint=`SNAPSHOT_TARGET_VOLUME__GET_MOUNTPOINT $index`
-		
-		result=`zfs list -o mountpoint ${volume} 2> /dev/null`
+		volume=$(SNAPSHOT_TARGET_VOLUME__GET_NAME "$index")
+		mountpoint=$(SNAPSHOT_TARGET_VOLUME__GET_MOUNTPOINT "$index")
+        
+		result=$(zfs list -o mountpoint "${volume}" 2> /dev/null)
 		if [ $? -eq 1 ]; then
 			zfs create -o atime=off -o mountpoint=${mountpoint} ${volume}
 		fi
