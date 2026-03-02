@@ -134,7 +134,6 @@ install_dependent_package(){
 		
 		command -v "${SCREEN_PATH}" > /dev/null 2>&1
 		if [ $? -ne 0 ]; then
-			yum install -y epel-release
 			yum install -y screen
 			[ $? -ne 0 ] && return 1
 		fi
