@@ -9,11 +9,4 @@ FUNC_REMOVE(){
 	rm -rf [[[SERVICE_LIB_DIR]]]
 	rm -rf [[[SERVICE_CONFIG_DIR]]]
 	rm -rf [[[UNIT_DIR]]]/[[[MINECRAFT_SERVER_SERVICE_NAME]]]
-	if [ "${1}" = "dppkg" ]; then
-		pkg delete -y screen
-		pkg delete -y git
-		pkg delete -y openjdk21-jre
-		pkg delete -y curl
-		pkg autoremove -y
-	fi
 }
