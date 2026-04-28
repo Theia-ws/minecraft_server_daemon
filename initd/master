@@ -9,7 +9,7 @@
 execute_file_path="$(cd $(dirname $0) && pwd)/$(basename $0)"
 execute_paramator="$@"
 
-switch_execute_user "Sudo is required to this script execute. Please input your account password." "Need root parmissions for this script execute." ${execute_file_path} ${execute_paramator}
+switch_execute_user "Sudo is required to this script execute. Please input your account password." "Need root parmissions for this script execute." ${execute_file_path} ${execute_paramator}
 user_check_result=$?
 if [ ${user_check_result} -eq 2 ]; then
 	exit 0

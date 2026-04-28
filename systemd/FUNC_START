@@ -5,6 +5,5 @@
 
 FUNC_START(){
 	cd ${MINECRAFT_SERVER_ROOT}
-	[[[SCREEN_PATH]]] -AmdS ${SCREEN_NAME} sudo -u ${MINECRAFT_SERVER_EXECUTE_USER} [[[JVM_PATH]]] -server -Xms${MIN_MEMORY} -Xmx${MAX_MEMORY} -jar ${JAR_PATH} nogui
-	#touch /var/lock/subsys/${MINECRAFT_SERVER_SERVICE_NAME}
+	[[[TMUX_PATH]]] new-session -d -s ${TMUX_NAME} sh -c "[[[SUDO_PATH]]] -u ${MINECRAFT_SERVER_EXECUTE_USER} [[[JAVA_PATH]]] -server -Xms${MIN_MEMORY} -Xmx${MAX_MEMORY} -jar ${JAR_PATH} nogui; [[[TMUX_PATH]]] kill-session -t ${TMUX_NAME}"
 }

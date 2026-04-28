@@ -1,0 +1,14 @@
+{
+    "REP_UPDATE":{
+        "APK":"apk update",
+        "APT":"apt-get -y update",
+        "PKG":"pkg update",
+        "YUM":"yum -y makecache"
+    },
+    "INSTALL":{
+        "APK":"apk add {PKG_MGR_PKG_NAME}",
+        "APT":"apt-get -y install {PKG_MGR_PKG_NAME}",
+        "PKG":"pkg install -y {PKG_MGR_PKG_NAME}",
+        "YUM":"yum -y install {PKG_MGR_PKG_NAME}"
+    }
+}

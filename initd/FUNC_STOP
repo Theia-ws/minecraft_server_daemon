@@ -15,9 +15,8 @@ FUNC_STOP(){
 			sleep 1
 		done
 		FUNC_EXECCOMMAND "stop"
-		while [ $? -eq 0 ]; do
+		while [[[TMUX_PATH]]] has-session -t ${TMUX_NAME} 2>/dev/null; do
 			sleep 1
-			FUNC_EXECCOMMAND '' >& /dev/null
 		done
 		rm -f /var/lock/subsys/${MINECRAFT_SERVER_SERVICE_NAME}
 		echo_success

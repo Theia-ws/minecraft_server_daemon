@@ -30,7 +30,7 @@ check_can_install
 if [ $? -eq 1 ]; then
 	exit 1
 fi
-install_dependent_package
+install_dep_pkgs
 if [ $? -eq 1 ]; then
 	exit 1
 fi

@@ -14,7 +14,7 @@
 <tr><td>curl</td><td>✔</td><td>✔</td><td>✔</td><td>✔</td></tr>
 <tr><td>git</td><td>✔</td><td>✔</td><td>✔</td><td>✔</td></tr>
 <tr><td>jre17</td><td>✔</td><td>✔</td><td>✔</td><td>✔</td></tr>
-<tr><td>screen</td><td>✔</td><td>✔</td><td>✔</td><td>✔</td></tr>
+<tr><td>tmux</td><td>✔</td><td>✔</td><td>✔</td><td>✔</td></tr>
 <tr><td>sudo</td><td>➖</td><td>✔</td><td>✔</td><td>✔</td></tr>
 </table>
 <h3>実行ユーザ</h3>
@@ -60,9 +60,9 @@
 <li>MINECRAFT_SERVER_EXECUTE_GROUP<br/>Minecraftサーバを実行するグループ名を指定します。Initd、又は、Systemdをインストールする場合、事前準備で用意したユーザのグループ名を指定してください。</li>
 <li>MINECRAFT_SERVER_ROOT<br/>サーバ実行時のルートディレクトリを指定します。このディレクトリ配下にWorldやホワイトリストが保存されます。</li>
 <li>CURL_PATH<br/>curlコマンドのパスを指定します。(ディストリビューション付属のものを使う場合は不要)</li>
-<li>SCREEN_PATH<br/>screenコマンドのパスを指定します。(ディストリビューション付属のものを使う場合は不要)</li>
-<li>SCREEN_NAME<br/>Minecraftサーバを実行するスクリーン名を指定します。</li>
-<li>JVM_PATH<br/>javaコマンドのパスを指定します。(ディストリビューション付属のものを使う場合は不要)</li>
+<li>TMUX_PATH<br/>tmuxコマンドのパスを指定します。(ディストリビューション付属のものを使う場合は不要)</li>
+<li>TMUX_NAME<br/>Minecraftサーバを実行するtmux名を指定します。</li>
+<li>JAVA_PATH<br/>javaコマンドのパスを指定します。(ディストリビューション付属のものを使う場合は不要)</li>
 <li>MIN_MEMORY<br/>Minecraftサーバを実行するJVMに割り当てる最小メモリを指定します。</li>
 <li>MAX_MEMORY<br/>Minecraftサーバを実行するJVMに割り当てる最大メモリを指定します。</li>
 <li>JAR_PATH<br/>Minecraftサーバとして実行するJARファイルのパスを指定します。ビルド機能によってこのパスに配置されたJARファイルを更新します。</li>
@@ -95,6 +95,6 @@
 <h3>今後やりたい事</h3>
 <ol>
 <li>sudoの排除</li>
-<li>screenの排除</li>
+<li>tmuxの排除</li>
 <li>インストーラの一本化</li>
 </ol>

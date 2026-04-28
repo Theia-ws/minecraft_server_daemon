@@ -7,12 +7,14 @@ FUNC_BUILD(){
 	if [ ${SERVER_TYPE} = "spigot" ]; then
 		FUNC_SPIGOT_BUILD "/tmp/minecraft_server/build/Spigot/Spigot-Server/target/${SERVER_TYPE}-*jar"
 		RESULT=$?
-	elif [ ${SERVER_TYPE} = "craftbukkit" ]; then
-		FUNC_SPIGOT_BUILD "/tmp/minecraft_server/build/CraftBukkit/target/${SERVER_TYPE}-*jar"
-		RESULT=$?
+	#elif [ ${SERVER_TYPE} = "craftbukkit" ]; then
+		#FUNC_SPIGOT_BUILD "/tmp/minecraft_server/build/CraftBukkit/target/${SERVER_TYPE}-*jar"
+		#RESULT=$?
 	elif [ ${SERVER_TYPE} = "papermc" ]; then
 		FUNC_DOWNLOAD_PAPERMC
 		RESULT=$?
+	else
+		RESULT=1
 	fi
 	return ${RESULT}
 }
@@ -22,7 +24,7 @@ FUNC_SPIGOT_BUILD(){
 	mkdir -p /tmp/minecraft_server/build/
 	cd /tmp/minecraft_server/build/
 	[[[CURL_PATH]]] -fsSL https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar -o /tmp/minecraft_server/build/BuildTools.jar
-	[[[JVM_PATH]]] -server -jar /tmp/minecraft_server/build/BuildTools.jar --rev ${SERVER_REVISION}
+	[[[JAVA_PATH]]] -server -jar /tmp/minecraft_server/build/BuildTools.jar --rev ${SERVER_REVISION}
 	FUNC_JAR_REPLACE "/tmp/minecraft_server/build/${SERVER_TYPE}-*jar"
 	RESULT=$?
 	if [ ${RESULT} -ne 0 ]; then

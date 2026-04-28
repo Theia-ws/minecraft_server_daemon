@@ -1,0 +1,88 @@
+[
+    {
+        "Name":"jq",
+        "_common":{
+            "CAN_USE_OS_PKG":true,
+            "PKG_MGR_PKG_NAME":"jq"
+        }
+    },
+    {
+        "Name":"tar",
+        "_common":{
+            "CAN_USE_OS_PKG":true,
+            "PKG_MGR_PKG_NAME":"tar"
+        }
+    },
+    {
+        "Name":"curl",
+        "_common":{
+            "CAN_USE_OS_PKG":true,
+            "PKG_MGR_PKG_NAME":"curl"
+        }
+    },
+    {
+        "Name":"git",
+        "_common":{
+            "CAN_USE_OS_PKG":true,
+            "PKG_MGR_PKG_NAME":"git"
+        }
+    },
+    {
+        "Name":"java",
+        "linux":{
+            "rhel": {
+                "CAN_USE_OS_PKG":true,
+                "PKG_MGR_PKG_NAME":"java-{PKG_VERSION}-openjdk-headless"
+            },
+            "almalinux": {
+                "CAN_USE_OS_PKG":true,
+                "PKG_MGR_PKG_NAME":"java-{PKG_VERSION}-openjdk-headless"
+            },
+            "rocky": {
+                "CAN_USE_OS_PKG":true,
+                "PKG_MGR_PKG_NAME":"java-{PKG_VERSION}-openjdk-headless"
+            },
+            "debian": {
+                "CAN_USE_OS_PKG":true,
+                "PKG_MGR_PKG_NAME":"openjdk-{PKG_VERSION}-jre"
+            },
+            "ubuntu": {
+                "CAN_USE_OS_PKG":true,
+                "PKG_MGR_PKG_NAME":"openjdk-{PKG_VERSION}-jre"
+            }
+        },
+        "freebsd":{
+            "_common":{
+                "CAN_USE_OS_PKG":true,
+                "PKG_MGR_PKG_NAME":"openjdk{PKG_VERSION}-jre"
+            }
+        },
+        "_common":{
+            "CAN_USE_OS_PKG":false,
+            "EXECUTION_BIN":"/opt/jdk/{TAR_ROOT}/bin/java",
+            "DPKG_CMD":"tar -C {INSTALL_PATH} -xzf {TMP_FILE_PATH}",
+            "DOWNLOAD_CMD":"curl -L {PKG_URL} -o {TMP_FILE_PATH}",
+            "INSTALL_PATH":"/opt/jdk",
+            "MAKE_INSTALL_PATH_CMD":"mkdir -p {INSTALL_PATH}",
+            "PKG_URL":"http://api.adoptium.net/v3/binary/latest/{PKG_VERSION}/ga/{UNAME_OS_STRING}/{UNAME_M}/jdk/hotspot/normal/eclipse",
+            "PKG_VERSION":"25",
+            "RM_TMP_FILE_CMD":"rm {TMP_FILE_PATH}",
+            "TAR_ROOT":"tar -t -f {TMP_FILE_PATH} | grep '/' | cut -d/ -f1 | sort -u | head -n 1",  
+            "TMP_FILE_PATH":"/tmp/temurin.tar.gz"
+        }
+    },
+    {
+        "Name":"tmux",
+        "_common":{
+            "CAN_USE_OS_PKG":true,
+            "PKG_MGR_PKG_NAME":"tmux"
+        }
+    },
+    {
+        "Name":"sudo",
+        "_common":{
+            "CAN_USE_OS_PKG":true,
+            "PKG_MGR_PKG_NAME":"sudo"
+        }
+    }
+]
