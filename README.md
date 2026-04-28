@@ -44,7 +44,7 @@
 <h3>動作確認OS</h3>
 <table>
 <tr><th>FreeBSD</th><th>FreeBSD<br/>ZFS(推奨)</th><th>Systemd</th><th>Initd</th></tr>
-<tr><td>FreeBSD 13</td><td>FreeBSD 13</td><td>Alma Linux 9(SELnuxの無効化が必要)<br />Utuntu Server 20.4<br />Debian 11.3</td><td>No Test</td></tr>
+<tr><td>FreeBSD 15</td><td>FreeBSD 15</td><td>Alma Linux 10(SELnuxの無効化が必要)<br />Utuntu Server 24.4<br />Debian 13.4</td><td>No Test</td></tr>
 </table>
 <h2>インストール手順</h2>
 <h3>事前準備</h3>
