@@ -4,7 +4,6 @@ check_execute_user(){
 	if [ "$(id -u)" -eq 0 ]; then
 		return 0
 	fi
-	echo "${1}"
 	return 1
 }
 

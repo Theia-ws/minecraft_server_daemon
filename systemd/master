@@ -47,7 +47,7 @@ stop)
 	systemctl stop ${MINECRAFT_SERVER_SERVICE_NAME}
 ;;
 *)
-echo $"Usage: $0 {build|command|disable|enable|restart|start|stop}"
+echo "Usage: $0 {build|command|disable|enable|restart|start|stop}"
 exit 1
 esac
 exit 0
