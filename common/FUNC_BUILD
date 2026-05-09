@@ -4,15 +4,12 @@
 
 FUNC_BUILD(){
 	RESULT=0
-	if [ ${SERVER_TYPE} = "spigot" ]; then
-		FUNC_SPIGOT_BUILD "/tmp/minecraft_server/build/Spigot/Spigot-Server/target/${SERVER_TYPE}-*jar"
-		RESULT=$?
-	#elif [ ${SERVER_TYPE} = "craftbukkit" ]; then
-		#FUNC_SPIGOT_BUILD "/tmp/minecraft_server/build/CraftBukkit/target/${SERVER_TYPE}-*jar"
-		#RESULT=$?
-	elif [ ${SERVER_TYPE} = "papermc" ]; then
+	if [ "${SERVER_TYPE}" = "spigot" ]; then
+		FUNC_SPIGOT_BUILD
+		RESULT="${?}"
+	elif [ "${SERVER_TYPE}" = "papermc" ]; then
 		FUNC_DOWNLOAD_PAPERMC
-		RESULT=$?
+		RESULT="${?}"
 	else
 		RESULT=1
 	fi
@@ -21,54 +18,47 @@ FUNC_BUILD(){
 
 FUNC_SPIGOT_BUILD(){
 	RESULT=0
-	mkdir -p /tmp/minecraft_server/build/
-	cd /tmp/minecraft_server/build/
-	[[[CURL_PATH]]] -fsSL https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar -o /tmp/minecraft_server/build/BuildTools.jar
-	[[[JAVA_PATH]]] -server -jar /tmp/minecraft_server/build/BuildTools.jar --rev ${SERVER_REVISION}
-	FUNC_JAR_REPLACE "/tmp/minecraft_server/build/${SERVER_TYPE}-*jar"
-	RESULT=$?
-	if [ ${RESULT} -ne 0 ]; then
-		FUNC_JAR_REPLACE "${1}"
-		RESULT=$?
-	fi
-	rm -rf /tmp/minecraft_server/build
+	mkdir -p "${BUILD_DIR}"
+	
+	[[[CURL_PATH]]] -fsSL "https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar" -o "${BUILD_DIR%/}/BuildTools.jar"
+	[[[JAVA_PATH]]] -server -jar "${BUILD_DIR%/}/BuildTools.jar" --rev "${SERVER_REVISION}"
+	FUNC_JAR_REPLACE "${BUILD_DIR%/}/${SERVER_TYPE}-*jar" "${JAR_PATH}"
+	RESULT="${?}"
+	rm -rf "${BUILD_DIR}"
 	return ${RESULT}
 }
 
 FUNC_DOWNLOAD_PAPERMC(){
-	mkdir -p /tmp/minecraft_server/build
+	mkdir -p "${BUILD_DIR}"
 
 	[[[CURL_PATH]]] -fsSL "https://fill.papermc.io/v3/projects/paper/versions/${SERVER_REVISION}/builds/latest" -H  "accept: application/json" | jq -r '.downloads."server:default".name, .downloads."server:default".url' | {
 		IFS= read -r file_name
 		IFS= read -r url
-		[[[CURL_PATH]]] -fsSL "${url}" -H  "accept: application/java-archive" -o /tmp/minecraft_server/build/${file_name}
-		FUNC_JAR_REPLACE "/tmp/minecraft_server/build/${file_name}"
+		[[[CURL_PATH]]] -fsSL "${url}" -H  "accept: application/java-archive" -o "${BUILD_DIR%/}/${file_name}"
+		FUNC_JAR_REPLACE "${BUILD_DIR%/}/${file_name}" "${JAR_PATH}"
 	}
 	
-	RESULT=$?
-	rm -rf /tmp/minecraft_server/build
-	return ${RESULT}
+	RESULT="${?}"
+	rm -rf "${BUILD_DIR}"
+	return "${RESULT}"
 }
 
 FUNC_DOWNLOAD_GEYSER(){
-	[[[CURL_PATH]]] -fsSL https://ci.opencollab.dev/job/GeyserMC/job/Geyser/job/master/lastSuccessfulBuild/artifact/bootstrap/spigot/build/libs/Geyser-Spigot.jar -o /tmp/minecraft_server/build/
-	[[[CURL_PATH]]] -fsSL https://ci.opencollab.dev/job/GeyserMC/job/Floodgate/job/master/lastSuccessfulBuild/artifact/spigot/build/libs/floodgate-spigot.jar -o /tmp/minecraft_server/build/
-	[[[CURL_PATH]]] -fsSL https://github.com/Camotoy/GeyserSkinManager/releases/latest/download/GeyserSkinManager-Spigot.jar -o /tmp/minecraft_server/build/
-	XX_FUNC_JAR_REPLACE /tmp/minecraft_server/build/Geyser-Spigot.jar
-	XX_FUNC_JAR_REPLACE /tmp/minecraft_server/build/GeyserSkinManager-Spigot.jar
-	XX_FUNC_JAR_REPLACE /tmp/minecraft_server/build/floodgate-spigot.jar
+	[[[CURL_PATH]]] -fsSL https://ci.opencollab.dev/job/GeyserMC/job/Geyser/job/master/lastSuccessfulBuild/artifact/bootstrap/spigot/build/libs/Geyser-Spigot.jar -o "${BUILD_DIR}"
+	[[[CURL_PATH]]] -fsSL https://ci.opencollab.dev/job/GeyserMC/job/Floodgate/job/master/lastSuccessfulBuild/artifact/spigot/build/libs/floodgate-spigot.jar -o "${BUILD_DIR}"
+	[[[CURL_PATH]]] -fsSL https://github.com/Camotoy/GeyserSkinManager/releases/latest/download/GeyserSkinManager-Spigot.jar -o "${BUILD_DIR}"
+	XX_FUNC_JAR_REPLACE "${BUILD_DIR%/}/Geyser-Spigot.jar"
+	XX_FUNC_JAR_REPLACE "${BUILD_DIR%/}/GeyserSkinManager-Spigot.jar"
+	XX_FUNC_JAR_REPLACE "${BUILD_DIR%/}/floodgate-spigot.jar"
 }
 
 FUNC_JAR_REPLACE(){
-	if [ -e ${JAR_PATH} ]; then
-		mv ${JAR_PATH} ${JAR_PATH}.bak
-	fi
-	mv ${1} ${JAR_PATH}
-	if [ ! -e ${JAR_PATH} ]; then
-		if [ -e ${JAR_PATH}.bak ]; then
-			mv ${JAR_PATH}.bak ${JAR_PATH}
-		fi
+	if [ ! -e "${1}" ]; then
 		return 1
 	fi
+	if [ -e "${2}" ]; then
+		mv "${2}" "${2}.bak"
+	fi
+	mv "${1}" "${2}"
 	return 0
 }

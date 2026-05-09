@@ -3,10 +3,11 @@ Description=The Minecraft Server
 After=syslog.target network.target
 
 [Service]
-Type=forking
+Type=simple
 Restart=no
 User=[[[MINECRAFT_SERVER_EXECUTE_USER]]]
 EnvironmentFile=[[[SERVICE_CONFIG_DIR]]]/[[[MINECRAFT_SERVER_SERVICE_NAME]]]
+WorkingDirectory=[[[MINECRAFT_SERVER_ROOT]]]
 ExecStart=[[[SERVICE_LIB_DIR]]]/EXEC_START
 ExecReload=[[[SERVICE_LIB_DIR]]]/EXEC_RELOAD
 ExecStop=[[[SERVICE_LIB_DIR]]]/EXEC_STOP

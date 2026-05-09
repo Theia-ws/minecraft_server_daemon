@@ -1,7 +1,0 @@
-#!/bin/sh
-
-. [[[SERVICE_CONFIG_DIR]]]/[[[MINECRAFT_SERVER_SERVICE_NAME]]]
-
-FUNC_EXECCOMMAND(){
-	[[[TMUX_PATH]]] send-keys -t ${TMUX_NAME} "$1" Enter
-}

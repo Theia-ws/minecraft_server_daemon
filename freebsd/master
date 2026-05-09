@@ -3,26 +3,22 @@
 . [[[SERVICE_CONFIG_DIR]]]/[[[MINECRAFT_SERVER_SERVICE_NAME]]]
 . [[[SERVICE_LIB_DIR]]]/FUNC_BUILD
 . [[[SERVICE_LIB_DIR]]]/FUNC_COMMON
-. [[[SERVICE_LIB_DIR]]]/FUNC_EXECCOMMAND
 . [[[SERVICE_LIB_DIR]]]/FUNC_REMOVE
 
 execute_file_path="$(cd $(dirname $0) && pwd)/$(basename $0)"
 execute_paramator="$@"
 
-switch_execute_user "Sudo is required to this script execute. Please input your account password." "Need root parmissions for this script execute." ${execute_file_path} ${execute_paramator}
-user_check_result=$?
-if [ ${user_check_result} -eq 2 ]; then
+switch_execute_user "Sudo is required to this script execute. Please input your account password." "Need root parmissions for this script execute." "1${execute_file_path}" "${execute_paramator}"
+user_check_result="${?}"
+if [ "${user_check_result}" -eq 2 ]; then
 	exit 0
-elif [ ${user_check_result} -eq 1 ]; then
+elif [ "${user_check_result}" -eq 1 ]; then
 	exit 1
 fi
 
-case "$1" in
+case "${1}" in
 build)
 	FUNC_BUILD
-;;
-command)
-	FUNC_EXECCOMMAND "$2"
 ;;
 disable)
 	sed -i "" -e "/[[[MINECRAFT_SERVER_SERVICE_NAME]]]_enable=/d" /etc/rc.conf
@@ -31,23 +27,23 @@ enable)
 	echo "${MINECRAFT_SERVER_SERVICE_NAME}_enable=\"YES\"" >> /etc/rc.conf
 ;;
 remove)
-	FUNC_REMOVE "$2"
+	FUNC_REMOVE
 ;;
 restart)
-	service ${MINECRAFT_SERVER_SERVICE_NAME} stop
-	service ${MINECRAFT_SERVER_SERVICE_NAME} start
+	service "${MINECRAFT_SERVER_SERVICE_NAME}" stop
+	service "${MINECRAFT_SERVER_SERVICE_NAME}" start
 ;;
 start)
-	service ${MINECRAFT_SERVER_SERVICE_NAME} start
+	service "${MINECRAFT_SERVER_SERVICE_NAME}" start
 ;;
 status)
-	service ${MINECRAFT_SERVER_SERVICE_NAME} status
+	service "${MINECRAFT_SERVER_SERVICE_NAME}" status
 ;;
 stop)
-	service ${MINECRAFT_SERVER_SERVICE_NAME} stop
+	service "${MINECRAFT_SERVER_SERVICE_NAME}" stop
 ;;
 *)
-echo $"Usage: $0 {build|command|disable|enable|restart|start|stop}"
+echo "Usage: ${0} {build|command|disable|enable|restart|start|stop}"
 exit 1
 esac
 exit 0

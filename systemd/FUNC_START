@@ -1,8 +1,0 @@
-#!/bin/sh
-
-. [[[SERVICE_CONFIG_DIR]]]/[[[MINECRAFT_SERVER_SERVICE_NAME]]]
-. [[[SERVICE_LIB_DIR]]]/FUNC_EXECCOMMAND
-
-FUNC_START(){
-	[[[TMUX_PATH]]] new-session -d -s ${TMUX_NAME} sh -c "cd ${MINECRAFT_SERVER_ROOT} ; [[[JAVA_PATH]]] -server -Xms${MIN_MEMORY} -Xmx${MAX_MEMORY} -jar ${JAR_PATH} nogui >> /tmp/pwd.txt 2>&1; [[[TMUX_PATH]]] kill-session -t ${TMUX_NAME}"
-}

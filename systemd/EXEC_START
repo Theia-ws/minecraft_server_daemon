@@ -1,5 +1,5 @@
 #!/bin/sh
 
-. [[[SERVICE_LIB_DIR]]]/FUNC_START
+. [[[SERVICE_CONFIG_DIR]]]/[[[MINECRAFT_SERVER_SERVICE_NAME]]]
 
-FUNC_START
+exec "[[[JAVA_PATH]]]" -server -Xms${MIN_MEMORY} -Xmx${MAX_MEMORY} -jar ${JAR_PATH} nogui

@@ -1,5 +1,4 @@
 #!/bin/sh
 
-. [[[SERVICE_LIB_DIR]]]/FUNC_EXECCOMMAND
-
-FUNC_EXECCOMMAND "reload"
+#FUNC_EXECCOMMAND "reload"
+#TODO:リロードコマンドを実装を検討する

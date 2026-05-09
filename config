@@ -10,16 +10,11 @@ MINECRAFT_SERVER_EXECUTE_USER="minecraft"
 MINECRAFT_SERVER_EXECUTE_GROUP="minecraft"
 
 #サービス実行ルートディレクトリパス
+#TODO:Freebsdでは/var/db/minecraft_server,Linuxでは/var/lib/minecraft_serverなどに変更することを検討
 MINECRAFT_SERVER_ROOT="/var/minecraft_server"
 
 #curlコマンドパス
 #CURL_PATH="/usr/local/bin/curl"
-
-#tmuxコマンドのパス
-#TMUX_PATH="/usr/local/bin/tmux"
-
-#サービス実行tmux名
-TMUX_NAME="minecraft_server"
 
 #JAVAパス
 #JAVA_PATH="/usr/local/bin/java"
@@ -44,3 +39,6 @@ DEFAULT_STOP_WATE_TIME=60
 
 #By changing the setting below to TRUE you are indicating your agreement to our EULA (https://account.mojang.com/documents/minecraft_eula).
 eula=true
+
+#ビルド用一時ディレクトリ
+BUILD_DIR="/tmp/minecraft_server/build/"
