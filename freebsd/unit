@@ -12,23 +12,9 @@ rcvar="[[[MINECRAFT_SERVER_SERVICE_NAME]]]_enable"
 [[[MINECRAFT_SERVER_SERVICE_NAME]]]_user=${MINECRAFT_SERVER_EXECUTE_USER}
 [[[MINECRAFT_SERVER_SERVICE_NAME]]]_group=${MINECRAFT_SERVER_EXECUTE_GROUP}
 [[[MINECRAFT_SERVER_SERVICE_NAME]]]_chdir=${MINECRAFT_SERVER_ROOT}
-pidfile="${MINECRAFT_SERVER_ROOT}/minecraft_server.pid"
-
-#start_precmd="[[[MINECRAFT_SERVER_SERVICE_NAME]]]_start_precmd"
-
-#[[[MINECRAFT_SERVER_SERVICE_NAME]]]_start_precmd(){
-#    cd ${MINECRAFT_SERVER_ROOT}
-#	MINECRAFT_USER_HOME=$(getent passwd ${MINECRAFT_SERVER_EXECUTE_USER} | cut -d: -f6)
-#	mkdir -p ${MINECRAFT_USER_HOME}/.tmux
-#	chown ${MINECRAFT_SERVER_EXECUTE_USER}:${MINECRAFT_SERVER_EXECUTE_GROUP} ${MINECRAFT_USER_HOME}/.tmux
-#	chmod 700 ${MINECRAFT_USER_HOME}/.tmux
-#	export HOME=${MINECRAFT_USER_HOME}
-#	export TMUX_TMPDIR=${MINECRAFT_USER_HOME}/.tmux
-#}
 
 command="/usr/sbin/daemon"
-command_args="-p ${pidfile} -f \"[[[JAVA_PATH]]]\" -server -Xms${MIN_MEMORY} -Xmx${MAX_MEMORY} -jar ${JAR_PATH} nogui"
-#command_args="-p ${pidfile} -f \"[[[JAVA_PATH]]]\" -server -Xms${MIN_MEMORY} -Xmx${MAX_MEMORY} -jar ${JAR_PATH} nogui & echo $! > ${pidfile}"
+command_args=" -f \"[[[JAVA_PATH]]]\" -server -Xms${MIN_MEMORY} -Xmx${MAX_MEMORY} -jar ${JAR_PATH} nogui"
 
 stop_cmd="[[[SERVICE_LIB_DIR]]]/EXEC_STOP"
 

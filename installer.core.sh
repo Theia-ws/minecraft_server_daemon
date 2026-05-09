@@ -313,7 +313,7 @@ copy_lib(){
 }
 
 make_server_root(){
-    //TODO:存在したら置換、存在しなかったら追記に修正する
+    #TODO:存在したら置換、存在しなかったら追記に修正する
 	[ ! -e "${MINECRAFT_SERVER_ROOT}" ] && mkdir -p "${MINECRAFT_SERVER_ROOT}"
 	[ ! -e "${MINECRAFT_SERVER_ROOT}/eula.txt" ] && echo "eula=${eula}" > "${MINECRAFT_SERVER_ROOT}/eula.txt"
     echo "enable-rcon=true" >> "${MINECRAFT_SERVER_ROOT}/server.properties"

@@ -3,10 +3,3 @@
 . [[[SERVICE_CONFIG_DIR]]]/[[[MINECRAFT_SERVER_SERVICE_NAME]]]
 
 "[[[JAVA_PATH]]]" -cp "[[[SERVICE_LIB_DIR]]]" FuncStop localhost 25575 [[[RCON_PASSWORD]]] 50000 ${DEFAULT_STOP_WATE_TIME}
-PID=$(cat ${MINECRAFT_SERVER_ROOT}/minecraft_server.pid 2>/dev/null)
-if [ -n \"$PID\" ]; then
-  while kill -0 \"$PID\" 2>/dev/null; do
-    sleep 1
-  done
-fi
-rm -f ${MINECRAFT_SERVER_ROOT}/minecraft_server.pid
