@@ -122,7 +122,7 @@ public class FuncStop implements AutoCloseable {
         int length = buffer.getInt();
         int responseId = buffer.getInt();
         int type = buffer.getInt();
-
+        // TODO: 分割レスポンスで帰ってきた場合の対処をする
         int payloadLength = length - 10; // ID(4)+Type(4)+Null(1)+Padding(1)
         if (payloadLength < 0) {
             return;
@@ -263,6 +263,7 @@ public class FuncStop implements AutoCloseable {
         failAllPending(new IOException("RCON connection closed."));
     }
 
+    // TODO:send(同期)も必要
     private static void sendAsyncCommand(FuncStop rcon, String command, CompletableFuture<Void> stopSignal, String logPrefix) {
         if (stopSignal.isDone()) {
             return;
@@ -308,6 +309,7 @@ public class FuncStop implements AutoCloseable {
             // 最初の save-all を非同期送信
             sendAsyncCommand(rcon, "save-all", stopSignal, "save-all response:");
 
+            // TODO:最初に何秒後に実行するかを登録しておかないと長時間のウェイトをかけた時に時間がズレるので対照が必要
             AtomicInteger remaining = new AtomicInteger(countdownSeconds);
             ScheduledFuture<?> countdownHandle = mainScheduler.scheduleAtFixedRate(() -> {
                 if (stopSignal.isDone()) {
@@ -316,6 +318,7 @@ public class FuncStop implements AutoCloseable {
 
                 int seconds = remaining.getAndDecrement();
                 if (seconds <= 0) {
+                    //TODO: STOPは同期的かつタイムアウトなしに受け取らないとワールドが破損する
                     sendAsyncCommand(rcon, "stop", stopSignal, "stop response:");
                     return;
                 }

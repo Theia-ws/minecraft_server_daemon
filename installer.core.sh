@@ -122,7 +122,7 @@ install_dep_pkg(){
         return 0
     else
         echo "[INFO] Installing ${PKG_NAME} manually."
-        
+        #TODO:既にインストールされている場合の処理を追加する
         PKG_URL=$(get_json_value "PKG_URL" "${PKG_JSON}")
         if [ -z "${PKG_URL}" ]; then
             echo "[ERROR] Package URL not found for ${PKG_NAME}"

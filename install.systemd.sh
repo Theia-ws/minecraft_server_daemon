@@ -16,6 +16,8 @@ SERVICE_LIB_DIR="/usr/local/lib/${MINECRAFT_SERVER_SERVICE_NAME}"
 BIN_DIR="/usr/local/bin"
 
 cild_file_sed(){
+	#TODO:ダブルクオーテーションで囲っても大丈夫？
+	#TODO:grepで見つからないとSedがエラーになるの点を修正する
 	grep -l [[[${2}]]] ${INSTALL_SOURCE_DIR}${1}/* | xargs sed -i -e "s/\[\[\[${2}\]\]\]/${3}/g"
 }
 

@@ -17,9 +17,11 @@ elif [ "${user_check_result}" -eq 1 ]; then
 fi
 
 case "${1}" in
+#TODO:BACKUPを作る
 build)
 	FUNC_BUILD
 ;;
+#TODO:COMMANDを作る
 disable)
 	sed -i "" -e "/[[[MINECRAFT_SERVER_SERVICE_NAME]]]_enable=/d" /etc/rc.conf
 ;;
@@ -33,6 +35,7 @@ restart)
 	service "${MINECRAFT_SERVER_SERVICE_NAME}" stop
 	service "${MINECRAFT_SERVER_SERVICE_NAME}" start
 ;;
+#TODO:SNAPSHOTを作る
 start)
 	service "${MINECRAFT_SERVER_SERVICE_NAME}" start
 ;;

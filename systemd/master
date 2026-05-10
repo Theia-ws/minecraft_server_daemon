@@ -17,9 +17,11 @@ elif [ "${user_check_result}" -eq 1 ]; then
 fi
 
 case "${1}" in
+#TODO:BACKUPを作る
 build)
 	FUNC_BUILD
 ;;
+#TODO:COMMANDを作る
 disable)
 	systemctl disable "${MINECRAFT_SERVER_SERVICE_NAME}"
 ;;
@@ -33,6 +35,7 @@ restart)
 	systemctl stop "${MINECRAFT_SERVER_SERVICE_NAME}"
 	systemctl start "${MINECRAFT_SERVER_SERVICE_NAME}"
 ;;
+#TODO:SNAPSHOTを作る
 start)
 	systemctl start "${MINECRAFT_SERVER_SERVICE_NAME}"
 ;;
