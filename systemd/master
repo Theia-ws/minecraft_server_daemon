@@ -17,36 +17,36 @@ elif [ "${user_check_result}" -eq 1 ]; then
 fi
 
 case "${1}" in
-#TODO:BACKUPを作る
-build)
-	FUNC_BUILD
-;;
-#TODO:COMMANDを作る
-disable)
-	systemctl disable "${MINECRAFT_SERVER_SERVICE_NAME}"
-;;
-enable)
-	systemctl enable "${MINECRAFT_SERVER_SERVICE_NAME}"
-;;
-remove)
-	FUNC_REMOVE
-;;
-restart)
-	systemctl stop "${MINECRAFT_SERVER_SERVICE_NAME}"
-	systemctl start "${MINECRAFT_SERVER_SERVICE_NAME}"
-;;
-#TODO:SNAPSHOTを作る
-start)
-	systemctl start "${MINECRAFT_SERVER_SERVICE_NAME}"
-;;
-status)
-	systemctl status "${MINECRAFT_SERVER_SERVICE_NAME}"
-;;
-stop)
-	systemctl stop "${MINECRAFT_SERVER_SERVICE_NAME}"
-;;
-*)
-echo "Usage: ${0} {build|command|disable|enable|restart|start|stop}"
-exit 1
+	#TODO:BACKUPを作る
+	build)
+		FUNC_BUILD
+	;;
+	#TODO:COMMANDを作る
+	disable)
+		systemctl disable "${MINECRAFT_SERVER_SERVICE_NAME}"
+	;;
+	enable)
+		systemctl enable "${MINECRAFT_SERVER_SERVICE_NAME}"
+	;;
+	remove)
+		FUNC_REMOVE
+	;;
+	restart)
+		systemctl stop "${MINECRAFT_SERVER_SERVICE_NAME}"
+		systemctl start "${MINECRAFT_SERVER_SERVICE_NAME}"
+	;;
+	#TODO:SNAPSHOTを作る
+	start)
+		systemctl start "${MINECRAFT_SERVER_SERVICE_NAME}"
+	;;
+	status)
+		systemctl status "${MINECRAFT_SERVER_SERVICE_NAME}"
+	;;
+	stop)
+		systemctl stop "${MINECRAFT_SERVER_SERVICE_NAME}"
+	;;
+	*)
+	echo "Usage: ${0} {build|disable|enable|restart|start|stop}"
+	exit 1
 esac
 exit 0

@@ -2,7 +2,7 @@
 
 . common/FUNC_COMMON
 
-DPPKG_JSON="./dppkg.json"
+DPPKG_JSON="${INSTALL_SOURCE_DIR}dppkg.json"
 
 check_can_install(){
 	endcode=0
@@ -222,16 +222,16 @@ install_pkg(){
     PKG_MGR_PKG_NAME="${1}"
     case "${PKG_MGR_NAME}" in
         APK)
-            apk add jq
+            apk add ${PKG_MGR_PKG_NAME}
             ;;
         APT)
-            apt-get -y install jq
+            apt-get -y install ${PKG_MGR_PKG_NAME}
             ;;
         PKG)
-            pkg install -y jq
+            pkg install -y ${PKG_MGR_PKG_NAME}
             ;;
         YUM)
-            yum -y install jq
+            yum -y install ${PKG_MGR_PKG_NAME}
             ;;
         *)
             echo "[ERROR] Unsupported package manager: ${PKG_MGR_NAME}"
@@ -254,29 +254,18 @@ gen_password() {
 }
 
 replace_env_val(){
-    #TODO:スラッシュの置換処理をChild _File＿Sedに移す
-	SERVICE_CONFIG_DIR_SED=$(echo "${SERVICE_CONFIG_DIR}" | sed -e 's/\//\\\//g')
-    MINECRAFT_SERVER_ROOT_SED=$(echo "${MINECRAFT_SERVER_ROOT}" | sed -e 's/\//\\\//g')
-	SERVICE_LIB_DIR_SED=$(echo "${SERVICE_LIB_DIR}" | sed -e 's/\//\\\//g')
-	UNIT_DIR_SED=$(echo "${UNIT_DIR}" | sed -e 's/\//\\\//g')
-	BIN_DIR_SED=$(echo "${BIN_DIR}" | sed -e 's/\//\\\//g')
-    CURL_PATH_SED=$(echo "${CURL_PATH}" | sed -e 's/\//\\\//g')
-	JAVA_PATH_SED=$(echo "${JAVA_PATH}" | sed -e 's/\//\\\//g')
-    SUDO_PATH_SED=$(echo "${SUDO_PATH}" | sed -e 's/\//\\\//g')
-	TMUX_PATH_SED=$(echo "${TMUX_PATH}" | sed -e 's/\//\\\//g')
-
-	cild_file_sed "${1}" "SERVICE_CONFIG_DIR" "${SERVICE_CONFIG_DIR_SED}"
-    cild_file_sed "${1}" "MINECRAFT_SERVER_ROOT" "${MINECRAFT_SERVER_ROOT_SED}"
+	cild_file_sed "${1}" "SERVICE_CONFIG_DIR" "${SERVICE_CONFIG_DIR}"
+    cild_file_sed "${1}" "MINECRAFT_SERVER_ROOT" "${MINECRAFT_SERVER_ROOT}"
     cild_file_sed "${1}" "RCON_PASSWORD" "${RCON_PASSWORD}"
 	cild_file_sed "${1}" "MINECRAFT_SERVER_SERVICE_NAME" "${MINECRAFT_SERVER_SERVICE_NAME}"
     cild_file_sed "${1}" "MINECRAFT_SERVER_EXECUTE_USER" "${MINECRAFT_SERVER_EXECUTE_USER}"
-	cild_file_sed "${1}" "SERVICE_LIB_DIR" "${SERVICE_LIB_DIR_SED}"
-	cild_file_sed "${1}" "UNIT_DIR" "${UNIT_DIR_SED}"
-	cild_file_sed "${1}" "BIN_DIR" "${BIN_DIR_SED}"
-	cild_file_sed "${1}" "CURL_PATH" "${CURL_PATH_SED}"
-	cild_file_sed "${1}" "JAVA_PATH" "${JAVA_PATH_SED}"
-    cild_file_sed "${1}" "SUDO_PATH" "${SUDO_PATH_SED}"
-	cild_file_sed "${1}" "TMUX_PATH" "${TMUX_PATH_SED}"
+	cild_file_sed "${1}" "SERVICE_LIB_DIR" "${SERVICE_LIB_DIR}"
+	cild_file_sed "${1}" "UNIT_DIR" "${UNIT_DIR}"
+	cild_file_sed "${1}" "BIN_DIR" "${BIN_DIR}"
+	cild_file_sed "${1}" "CURL_PATH" "${CURL_PATH}"
+	cild_file_sed "${1}" "JAVA_PATH" "${JAVA_PATH}"
+    cild_file_sed "${1}" "SUDO_PATH" "${SUDO_PATH}"
+	cild_file_sed "${1}" "TMUX_PATH" "${TMUX_PATH}"
 }
 
 install_unit(){
