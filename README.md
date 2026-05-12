@@ -53,8 +53,11 @@
 <li>MINECRAFT_SERVER_SERVICE_NAME<br/>システムに登録するサービス名を指定します。単一のサーバで複数のMinecraftを起動する場合変更してください。</li>
 <li>MINECRAFT_SERVER_EXECUTE_USER<br/>Minecraftサーバを実行するユーザ名を指定します。Initd、又は、Systemdをインストールする場合、事前準備で用意したユーザ名を指定してください。</li>
 <li>MINECRAFT_SERVER_EXECUTE_GROUP<br/>Minecraftサーバを実行するグループ名を指定します。Initd、又は、Systemdをインストールする場合、事前準備で用意したユーザのグループ名を指定してください。</li>
-<li>MINECRAFT_SERVER_ROOT<br/>サーバ実行時のルートディレクトリを指定します。このディレクトリ配下にWorldやホワイトリストが保存されます。</li>
+<li>MINECRAFT_SERVER_ROOT<br/>サーバ実行時のルートディレクトリを指定します。このディレクトリ配下にWorldやホワイトリストが保存されます。<br/>未指定の場合、FreeBSDでは/var/db/minecraft_server、Linuxでは/var/lib/minecraft_serverに保存されます。</li>
+<li>JQ_PATH<br/>jqコマンドのパスを指定します。(ディストリビューション付属のものを使う場合は不要)</li>
+<li>TAR_PATH<br/>tarコマンドのパスを指定します。(ディストリビューション付属のものを使う場合は不要)</li>
 <li>CURL_PATH<br/>curlコマンドのパスを指定します。(ディストリビューション付属のものを使う場合は不要)</li>
+<li>GIT_PATH=<br/>gitコマンドのパスを指定します。(ディストリビューション付属のものを使う場合は不要)</li>
 <li>JAVA_PATH<br/>javaコマンドのパスを指定します。(ディストリビューション付属のものを使う場合は不要)</li>
 <li>MIN_MEMORY<br/>Minecraftサーバを実行するJVMに割り当てる最小メモリを指定します。</li>
 <li>MAX_MEMORY<br/>Minecraftサーバを実行するJVMに割り当てる最大メモリを指定します。</li>

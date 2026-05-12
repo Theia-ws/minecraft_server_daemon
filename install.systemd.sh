@@ -14,6 +14,7 @@ SERVICE_CONFIG_DIR="/etc/sysconfig"
 INIT_SYS_NAME="systemd"
 SERVICE_LIB_DIR="/usr/local/lib/${MINECRAFT_SERVER_SERVICE_NAME}"
 BIN_DIR="/usr/local/bin"
+[ -z "${MINECRAFT_SERVER_ROOT}" ] && MINECRAFT_SERVER_ROOT="/var/lib/${MINECRAFT_SERVER_SERVICE_NAME}"
 
 cild_file_sed(){
 	REPLACE_VALUE=$(echo "${3}" | sed -e 's/\//\\\//g')
@@ -23,6 +24,17 @@ cild_file_sed(){
 make_execute_user(){
 	id ${MINECRAFT_SERVER_EXECUTE_USER} > /dev/null  2>&1
 	[ "${?}" -ne 0 ] && useradd ${MINECRAFT_SERVER_EXECUTE_USER} -s /sbin/nologin -m
+}
+
+update_property() {
+    KEY="${1}"
+    VALUE="${2}"
+
+    if grep -q "^[[:space:]]*${KEY}=" "${SERVER_PROPERTIES}"; then
+        sed -i -e "s|^[[:space:]]*${KEY}=.*|${KEY}=${VALUE}|" "${MINECRAFT_SERVER_ROOT}/server.properties"
+    else
+        echo "${KEY}=${VALUE}" >> "${MINECRAFT_SERVER_ROOT}/server.properties"
+    fi
 }
 
 . ./installer.core.sh
@@ -37,7 +49,7 @@ if [ "${?}" -eq 1 ]; then
 fi
 make_execute_user
 
-RCON_PASSWORD=$(gen_password)
+RCON_PASSWORD=$(make_password)
 
 replace_env_val "common"
 replace_env_val "${INIT_SYS_NAME}"

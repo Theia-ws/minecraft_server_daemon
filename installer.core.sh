@@ -248,7 +248,7 @@ get_json_value(){
     echo "${VAR_VALUE}"
 }
 
-gen_password() {
+make_password() {
   LANG=C tr -dc 'A-Za-z0-9_-' < /dev/urandom | head -c 32
   echo
 }
@@ -290,25 +290,23 @@ install_lib(){
 	ln -s "${SERVICE_LIB_DIR}/${MINECRAFT_SERVER_SERVICE_NAME}" "${BIN_DIR}/${MINECRAFT_SERVER_SERVICE_NAME}"
 }
 
-#TODO:展開をどうにかする
 copy_lib(){
-	ls ${INSTALL_SOURCE_DIR}${1}/FUNC_* > /dev/null 2>&1
-	[ $? -eq 0 ] && cp ${INSTALL_SOURCE_DIR}${1}/FUNC_* ${SERVICE_LIB_DIR}/
-	ls ${INSTALL_SOURCE_DIR}${1}/EXEC_* > /dev/null 2>&1
-	[ $? -eq 0 ] && cp ${INSTALL_SOURCE_DIR}${1}/EXEC_* ${SERVICE_LIB_DIR}/
-    ls ${INSTALL_SOURCE_DIR}${1}/*.class > /dev/null 2>&1
-	[ $? -eq 0 ] && cp ${INSTALL_SOURCE_DIR}${1}/*.class ${SERVICE_LIB_DIR}/
-	[ -e ${INSTALL_SOURCE_DIR}${1}/master ] && cp ${INSTALL_SOURCE_DIR}${1}/master ${SERVICE_LIB_DIR}/${MINECRAFT_SERVER_SERVICE_NAME}
+    set -- "${INSTALL_SOURCE_DIR}${1}"/FUNC_*
+    [ -e "$1" ] && cp "$@" "${SERVICE_LIB_DIR}/"
+    set -- "${INSTALL_SOURCE_DIR}${1}"/EXEC_*
+    [ -e "$1" ] && cp "$@" "${SERVICE_LIB_DIR}/"
+    set -- "${INSTALL_SOURCE_DIR}${1}"/*.class
+    [ -e "$1" ] && cp "$@" "${SERVICE_LIB_DIR}/"
+    [ -e "${INSTALL_SOURCE_DIR}${1}/master" ] && cp "${INSTALL_SOURCE_DIR}${1}/master" "${SERVICE_LIB_DIR}/${MINECRAFT_SERVER_SERVICE_NAME}"
 }
 
 make_server_root(){
-    #TODO:存在したら置換、存在しなかったら追記に修正する
-	[ ! -e "${MINECRAFT_SERVER_ROOT}" ] && mkdir -p "${MINECRAFT_SERVER_ROOT}"
+    [ ! -e "${MINECRAFT_SERVER_ROOT}" ] && mkdir -p "${MINECRAFT_SERVER_ROOT}"
 	[ ! -e "${MINECRAFT_SERVER_ROOT}/eula.txt" ] && echo "eula=${eula}" > "${MINECRAFT_SERVER_ROOT}/eula.txt"
-    echo "enable-rcon=true" >> "${MINECRAFT_SERVER_ROOT}/server.properties"
-    echo "rcon.password=${RCON_PASSWORD}" >> "${MINECRAFT_SERVER_ROOT}/server.properties"
-    echo "rcon.port=25575" >> "${MINECRAFT_SERVER_ROOT}/server.properties"
-    echo "broadcast-rcon-to-ops=false" >> "${MINECRAFT_SERVER_ROOT}/server.properties"
+    update_property "enable-rcon" "true"
+    update_property "rcon.password" "${RCON_PASSWORD}"
+    update_property "rcon.port" "25575"
+    update_property "broadcast-rcon-to-ops" "false"
 	chown -R ${MINECRAFT_SERVER_EXECUTE_USER}:${MINECRAFT_SERVER_EXECUTE_GROUP} "${MINECRAFT_SERVER_ROOT}"
 }
 

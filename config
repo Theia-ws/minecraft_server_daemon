@@ -10,14 +10,22 @@ MINECRAFT_SERVER_EXECUTE_USER="minecraft"
 MINECRAFT_SERVER_EXECUTE_GROUP="minecraft"
 
 #サービス実行ルートディレクトリパス
-#TODO:Freebsdでは/var/db/minecraft_server,Linuxでは/var/lib/minecraft_serverなどに変更することを検討
-MINECRAFT_SERVER_ROOT="/var/minecraft_server"
+#MINECRAFT_SERVER_ROOT=""
+
+#JQコマンドパス TODO:今のところ使ってない
+#JQ_PATH=""
+
+#tarコマンドパス
+#TAR_PATH=""
 
 #curlコマンドパス
-#CURL_PATH="/usr/local/bin/curl"
+#CURL_PATH=""
+
+#gitコマンドパス
+#GIT_PATH=""
 
 #JAVAパス
-#JAVA_PATH="/usr/local/bin/java"
+#JAVA_PATH=""
 
 #予約最小メモリ
 MIN_MEMORY="1024M"

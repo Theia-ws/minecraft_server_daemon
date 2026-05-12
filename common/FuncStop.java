@@ -8,14 +8,17 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
+import java.util.concurrent.CancellationException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class FuncStop implements AutoCloseable {
 
@@ -96,7 +99,9 @@ public class FuncStop implements AutoCloseable {
             throw e;
         }
 
-        pending.timeoutTask = scheduler.schedule(() -> failPendingRequest(id, new IOException("RCON command response timed out after " + timeoutMillis + " ms")), timeoutMillis, TimeUnit.MILLISECONDS);
+        if (timeoutMillis > 0) {
+            pending.timeoutTask = scheduler.schedule(() -> failPendingRequest(id, new IOException("RCON command response timed out after " + timeoutMillis + " ms")), timeoutMillis, TimeUnit.MILLISECONDS);
+        }
         return future;
     }
 
@@ -122,7 +127,6 @@ public class FuncStop implements AutoCloseable {
         int length = buffer.getInt();
         int responseId = buffer.getInt();
         int type = buffer.getInt();
-        // TODO: 分割レスポンスで帰ってきた場合の対処をする
         int payloadLength = length - 10; // ID(4)+Type(4)+Null(1)+Padding(1)
         if (payloadLength < 0) {
             return;
@@ -137,12 +141,26 @@ public class FuncStop implements AutoCloseable {
             return;
         }
 
+        // Minecraft RCON のコマンドレスポンスでは、type == 0 の複数パケットが返されることがある。
+        // 空の payload は分割レスポンスの終端を示すことが多い。
         synchronized (pending) {
-            pending.builder.append(payloadText);
+            if (type != 0) {
+                return;
+            }
+
+            if (payloadLength > 0) {
+                pending.builder.append(payloadText);
+            }
+
             if (pending.completionTask != null) {
                 pending.completionTask.cancel(false);
             }
-            pending.completionTask = scheduler.schedule(() -> completePendingRequest(responseId), packetCompleteDelayMillis, TimeUnit.MILLISECONDS);
+
+            if (payloadLength == 0) {
+                completePendingRequest(responseId);
+            } else {
+                pending.completionTask = scheduler.schedule(() -> completePendingRequest(responseId), packetCompleteDelayMillis, TimeUnit.MILLISECONDS);
+            }
         }
     }
 
@@ -263,8 +281,7 @@ public class FuncStop implements AutoCloseable {
         failAllPending(new IOException("RCON connection closed."));
     }
 
-    // TODO:send(同期)も必要
-    private static void sendAsyncCommand(FuncStop rcon, String command, CompletableFuture<Void> stopSignal, String logPrefix) {
+    private static void sendCommand(FuncStop rcon, String command, CompletableFuture<Void> stopSignal, String logPrefix, boolean sync, boolean completeOnSuccess) {
         if (stopSignal.isDone()) {
             return;
         }
@@ -278,18 +295,61 @@ public class FuncStop implements AutoCloseable {
             return;
         }
 
-        future.whenComplete((response, error) -> {
+        if (!sync) {
+            future.whenComplete((response, error) -> {
+                if (stopSignal.isDone()) {
+                    return;
+                }
+
+                if (error != null) {
+                    System.err.println(logPrefix + " failed: " + error.getMessage());
+                    stopSignal.complete(null);
+                } else {
+                    System.out.println(logPrefix + " " + response);
+                    if (completeOnSuccess && !stopSignal.isDone()) {
+                        stopSignal.complete(null);
+                    }
+                }
+            });
+            return;
+        }
+
+        try {
+            String response = future.get();
             if (stopSignal.isDone()) {
                 return;
             }
-
-            if (error != null) {
-                System.err.println(logPrefix + " failed: " + error.getMessage());
+            System.out.println(logPrefix + " " + response);
+            if (completeOnSuccess && !stopSignal.isDone()) {
                 stopSignal.complete(null);
-            } else {
-                System.out.println(logPrefix + " " + response);
             }
-        });
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            if (!stopSignal.isDone()) {
+                stopSignal.complete(null);
+            }
+        } catch (ExecutionException | CancellationException e) {
+            Throwable cause = e instanceof ExecutionException && e.getCause() != null ? e.getCause() : e;
+            System.err.println(logPrefix + " failed: " + cause.getMessage());
+            if (!stopSignal.isDone()) {
+                stopSignal.complete(null);
+            }
+        }
+    }
+
+    private static void sendAsyncCommand(FuncStop rcon, String command, CompletableFuture<Void> stopSignal, String logPrefix, boolean completeOnSuccess) {
+        sendCommand(rcon, command, stopSignal, logPrefix, false, completeOnSuccess);
+    }
+
+    private static void sendSyncCommand(FuncStop rcon, String command, CompletableFuture<Void> stopSignal, String logPrefix, CompletableFuture<String> waitFor, boolean completeOnSuccess) {
+        if (waitFor != null) {
+            try {
+                waitFor.join();
+            } catch (Exception ignored) {
+                // save-all failed or was interrupted; stop should still proceed.
+            }
+        }
+        sendCommand(rcon, command, stopSignal, logPrefix, true, completeOnSuccess);
     }
 
     public static void main(String[] args) {
@@ -306,11 +366,26 @@ public class FuncStop implements AutoCloseable {
         CompletableFuture<Void> stopSignal = new CompletableFuture<>();
 
         try (FuncStop rcon = new FuncStop(host, port, password, timeoutMillis)) {
-            // 最初の save-all を非同期送信
-            sendAsyncCommand(rcon, "save-all", stopSignal, "save-all response:");
-
-            // TODO:最初に何秒後に実行するかを登録しておかないと長時間のウェイトをかけた時に時間がズレるので対照が必要
             AtomicInteger remaining = new AtomicInteger(countdownSeconds);
+            final AtomicReference<CompletableFuture<String>> saveAllFutureRef = new AtomicReference<>();
+
+            try {
+                CompletableFuture<String> saveAllFuture = rcon.sendCommand("save-all");
+                saveAllFutureRef.set(saveAllFuture);
+                saveAllFuture.whenComplete((response, error) -> {
+                    if (error != null) {
+                        System.err.println("save-all failed: " + error.getMessage());
+                    } else {
+                        System.out.println("save-all response: " + response);
+                    }
+                });
+            } catch (IOException e) {
+                System.err.println("save-all send failed: " + e.getMessage());
+                CompletableFuture<String> failedFuture = new CompletableFuture<>();
+                failedFuture.completeExceptionally(e);
+                saveAllFutureRef.set(failedFuture);
+            }
+
             ScheduledFuture<?> countdownHandle = mainScheduler.scheduleAtFixedRate(() -> {
                 if (stopSignal.isDone()) {
                     return;
@@ -318,13 +393,12 @@ public class FuncStop implements AutoCloseable {
 
                 int seconds = remaining.getAndDecrement();
                 if (seconds <= 0) {
-                    //TODO: STOPは同期的かつタイムアウトなしに受け取らないとワールドが破損する
-                    sendAsyncCommand(rcon, "stop", stopSignal, "stop response:");
+                    sendSyncCommand(rcon, "stop", stopSignal, "stop response:", saveAllFutureRef.get(), true);
                     return;
                 }
 
                 if (seconds % 30 == 0 || seconds <= 10) {
-                    sendAsyncCommand(rcon, "say Server will stop in " + seconds + " seconds.", stopSignal, "say response:");
+                    sendAsyncCommand(rcon, "say Server will stop in " + seconds + " seconds.", stopSignal, "say response:", false);
                 }
             }, 1, 1, TimeUnit.SECONDS);
 
