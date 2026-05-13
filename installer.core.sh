@@ -254,18 +254,19 @@ make_password() {
 }
 
 replace_env_val(){
-	cild_file_sed "${1}" "SERVICE_CONFIG_DIR" "${SERVICE_CONFIG_DIR}"
-    cild_file_sed "${1}" "MINECRAFT_SERVER_ROOT" "${MINECRAFT_SERVER_ROOT}"
-    cild_file_sed "${1}" "RCON_PASSWORD" "${RCON_PASSWORD}"
-	cild_file_sed "${1}" "MINECRAFT_SERVER_SERVICE_NAME" "${MINECRAFT_SERVER_SERVICE_NAME}"
-    cild_file_sed "${1}" "MINECRAFT_SERVER_EXECUTE_USER" "${MINECRAFT_SERVER_EXECUTE_USER}"
-	cild_file_sed "${1}" "SERVICE_LIB_DIR" "${SERVICE_LIB_DIR}"
-	cild_file_sed "${1}" "UNIT_DIR" "${UNIT_DIR}"
-	cild_file_sed "${1}" "BIN_DIR" "${BIN_DIR}"
-	cild_file_sed "${1}" "CURL_PATH" "${CURL_PATH}"
-	cild_file_sed "${1}" "JAVA_PATH" "${JAVA_PATH}"
-    cild_file_sed "${1}" "SUDO_PATH" "${SUDO_PATH}"
-	cild_file_sed "${1}" "TMUX_PATH" "${TMUX_PATH}"
+	child_file_sed "${1}" "SERVICE_CONFIG_DIR" "${SERVICE_CONFIG_DIR}"
+    child_file_sed "${1}" "MINECRAFT_SERVER_ROOT" "${MINECRAFT_SERVER_ROOT}"
+    child_file_sed "${1}" "RCON_PASSWORD" "${RCON_PASSWORD}"
+	child_file_sed "${1}" "MINECRAFT_SERVER_SERVICE_NAME" "${MINECRAFT_SERVER_SERVICE_NAME}"
+    child_file_sed "${1}" "MINECRAFT_SERVER_EXECUTE_USER" "${MINECRAFT_SERVER_EXECUTE_USER}"
+	child_file_sed "${1}" "SERVICE_LIB_DIR" "${SERVICE_LIB_DIR}"
+	child_file_sed "${1}" "UNIT_DIR" "${UNIT_DIR}"
+	child_file_sed "${1}" "BIN_DIR" "${BIN_DIR}"
+    child_file_sed "${1}" "JQ_PATH" "${JQ_PATH}"
+	child_file_sed "${1}" "CURL_PATH" "${CURL_PATH}"
+	child_file_sed "${1}" "JAVA_PATH" "${JAVA_PATH}"
+    child_file_sed "${1}" "SUDO_PATH" "${SUDO_PATH}"
+	child_file_sed "${1}" "TMUX_PATH" "${TMUX_PATH}"
 }
 
 install_unit(){

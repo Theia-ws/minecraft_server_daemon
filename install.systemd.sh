@@ -16,7 +16,7 @@ SERVICE_LIB_DIR="/usr/local/lib/${MINECRAFT_SERVER_SERVICE_NAME}"
 BIN_DIR="/usr/local/bin"
 [ -z "${MINECRAFT_SERVER_ROOT}" ] && MINECRAFT_SERVER_ROOT="/var/lib/${MINECRAFT_SERVER_SERVICE_NAME}"
 
-cild_file_sed(){
+child_file_sed(){
 	REPLACE_VALUE=$(echo "${3}" | sed -e 's/\//\\\//g')
 	find "${INSTALL_SOURCE_DIR}${1}/" -type f -maxdepth 1 -exec grep -q "[[[${2}]]]" {} \; -exec sed -i -e "s/\[\[\[${2}\]\]\]/${REPLACE_VALUE}/g" {} +
 }
