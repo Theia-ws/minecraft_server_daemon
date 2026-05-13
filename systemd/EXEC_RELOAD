@@ -1,4 +1,0 @@
-#!/bin/sh
-
-#FUNC_EXECCOMMAND "reload"
-#TODO:リロードコマンドを実装を検討する
