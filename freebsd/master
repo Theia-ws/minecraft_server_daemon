@@ -23,7 +23,7 @@ case "${1}" in
 	;;
 	#TODO:COMMANDを作る
 	disable)
-		sed -i "" -e "/[[[MINECRAFT_SERVER_SERVICE_NAME]]]_enable=/d" /etc/rc.conf
+		sed -i "" -e "/${MINECRAFT_SERVER_SERVICE_NAME}_enable=/d" /etc/rc.conf
 	;;
 	enable)
 		echo "${MINECRAFT_SERVER_SERVICE_NAME}_enable=\"YES\"" >> /etc/rc.conf
