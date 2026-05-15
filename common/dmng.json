@@ -1,0 +1,33 @@
+{
+    "linux":{
+        "openrc": {
+            "disable": "",
+            "enable": "",
+            "reload": "",
+            "restart": "",
+            "start": "",
+            "status": "",
+            "stop": ""
+        },
+        "systemd": {
+            "disable": "systemctl disable \"{MINECRAFT_SERVER_SERVICE_NAME}\"",
+            "enable": "systemctl enable \"{MINECRAFT_SERVER_SERVICE_NAME}\"",
+            "reload": "systemctl daemon-reload",
+            "restart": "systemctl stop \"{MINECRAFT_SERVER_SERVICE_NAME}\" && systemctl start \"{MINECRAFT_SERVER_SERVICE_NAME}\"",
+            "start": "systemctl start \"{MINECRAFT_SERVER_SERVICE_NAME}\"",
+            "status": "systemctl status \"{MINECRAFT_SERVER_SERVICE_NAME}\"",
+            "stop": "systemctl stop \"{MINECRAFT_SERVER_SERVICE_NAME}\""
+        }
+    },
+    "freebsd":{
+        "_common":{
+            "disable": "sed -i \"\" -e \"/{MINECRAFT_SERVER_SERVICE_NAME}_enable=/d\" /etc/rc.conf",
+            "enable": "echo \"{MINECRAFT_SERVER_SERVICE_NAME}_enable=\\\"YES\\\"\" >> /etc/rc.conf",
+            "reload": ":",
+            "restart": "service \"{MINECRAFT_SERVER_SERVICE_NAME}\" stop && service \"{MINECRAFT_SERVER_SERVICE_NAME}\" start",
+            "start": "service \"{MINECRAFT_SERVER_SERVICE_NAME}\" start",
+            "status": "service \"{MINECRAFT_SERVER_SERVICE_NAME}\" status",
+            "stop": "service \"{MINECRAFT_SERVER_SERVICE_NAME}\" stop"
+        }
+    }
+}

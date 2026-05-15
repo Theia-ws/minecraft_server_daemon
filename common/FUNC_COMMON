@@ -33,3 +33,55 @@ switch_execute_user(){
 	fi
 	return 0
 }
+
+get_os_info(){
+    UNAME_M=$(uname -m)
+    UNAME_OS_STRING=$(uname -s | tr '[:upper:]' '[:lower:]')
+    UNAME_S=$(uname -s)
+    case "${UNAME_S}" in
+        Linux)
+            if [ -f /etc/os-release ]; then
+                . /etc/os-release
+                DIST_ID="${ID}"
+                DIST_LIKE="${ID_LIKE}"
+                #TODO:DAEMON_TYPEの判定が怪しい　DIST＿IDやDIST＿LIKEではなくINITシステム固有ファイル有無とかで判定した方がいい
+                if [ "${DIST_ID}" = "alpine" ]; then
+                    PKG_MGR_NAME="APK"
+                    DAEMON_TYPE="openrc"
+                elif echo "${DIST_LIKE}" | grep -q "debian"; then
+                    PKG_MGR_NAME="APT"
+                    DAEMON_TYPE="systemd"
+                elif [ "${DIST_ID}" = "debian" ]; then
+                    PKG_MGR_NAME="APT"
+                    DAEMON_TYPE="systemd"
+                elif echo "${DIST_LIKE}" | grep -Eqw "rhel|fedora"; then
+                    PKG_MGR_NAME="YUM"
+                    DAEMON_TYPE="systemd"
+                elif [ "${DIST_ID}" = "fedora" ]; then
+                    PKG_MGR_NAME="YUM"
+                    DAEMON_TYPE="systemd"
+                else
+                    return 1
+                fi
+            else
+                return 1
+            fi
+            ;;
+        FreeBSD)
+            PKG_MGR_NAME="PKG"
+            DAEMON_TYPE="freebsd"
+            DIST_ID="FreeBSD"
+            ;;
+        *)
+            return 1
+            ;;
+    esac
+}
+
+get_daemon_json_value(){
+    VAR_NAME="${1}"
+    PKG_JSON="${2}"
+    VAR_VALUE=$(echo "${PKG_JSON}" | [[[JQ_PATH]]] --arg os "${UNAME_OS_STRING}" --arg dtype "${DAEMON_TYPE}" --arg var "${VAR_NAME}" -r '.[$os][$dtype][$var] // .[$os]["_common"][$var] // .["_common"][$var] // .[$var] // empty')
+    VAR_VALUE=$(echo "${VAR_VALUE}" | sed "s/{MINECRAFT_SERVER_SERVICE_NAME}/${MINECRAFT_SERVER_SERVICE_NAME}/g")
+    echo "${VAR_VALUE}"
+}

@@ -1,12 +1,30 @@
 #!/bin/sh
 
 . [[[SERVICE_CONFIG_DIR]]]/[[[MINECRAFT_SERVER_SERVICE_NAME]]]
+. [[[SERVICE_LIB_DIR]]]/FUNC_COMMON
 
 FUNC_REMOVE(){
+
+	DMNG_JSON="[[[SERVICE_LIB_DIR]]]/dmng.json"
+	DMNG_JSON_STR=$(cat "${DMNG_JSON}")
+	if [ -z "${DMNG_JSON_STR}" ]; then
+		echo "Error: Failed to read dmng.json. Please check the file content."
+		return 1
+	fi
+
 	"[[[BIN_DIR]]]/[[[MINECRAFT_SERVER_SERVICE_NAME]]]" stop
 	"[[[BIN_DIR]]]/[[[MINECRAFT_SERVER_SERVICE_NAME]]]" disable
 	unlink "[[[BIN_DIR]]]/[[[MINECRAFT_SERVER_SERVICE_NAME]]]"
 	rm -rf "[[[SERVICE_LIB_DIR]]]"
 	rm -rf "[[[SERVICE_CONFIG_DIR]]]"
 	rm -rf "[[[UNIT_DIR]]]/[[[MINECRAFT_SERVER_SERVICE_NAME]]]"
+
+	EXECUTE_COMMAND=$(get_daemon_json_value "reload" ${DMNG_JSON_STR})
+	if [ -z "${EXECUTE_COMMAND}" ]; then
+		echo "Error: Failed to read command from dmng.json. Please check the file content."
+		return 1
+	fi
+
+	eval "${EXECUTE_COMMAND}"
+
 }

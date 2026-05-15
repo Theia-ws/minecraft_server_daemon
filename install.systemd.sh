@@ -7,6 +7,8 @@ cd $(dirname $0)
 . ./config
 . ./common/FUNC_COMMON
 
+get_os_info
+
 INSTALL_SOURCE_DIR="./"
 UNIT_DIR="/etc/systemd/system"
 INSTALLD_UNIT_FILENAME="${MINECRAFT_SERVER_SERVICE_NAME}.service"

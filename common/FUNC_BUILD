@@ -31,7 +31,7 @@ FUNC_SPIGOT_BUILD(){
 FUNC_DOWNLOAD_PAPERMC(){
 	mkdir -p "${BUILD_DIR}"
 
-	[[[CURL_PATH]]] -fsSL "https://fill.papermc.io/v3/projects/paper/versions/${SERVER_REVISION}/builds/latest" -H  "accept: application/json" | jq -r '.downloads."server:default".name, .downloads."server:default".url' | {
+	[[[CURL_PATH]]] -fsSL "https://fill.papermc.io/v3/projects/paper/versions/${SERVER_REVISION}/builds/latest" -H  "accept: application/json" | [[[JQ_PATH]]] -r '.downloads."server:default".name, .downloads."server:default".url' | {
 		IFS= read -r file_name
 		IFS= read -r url
 		[[[CURL_PATH]]] -fsSL "${url}" -H  "accept: application/java-archive" -o "${BUILD_DIR%/}/${file_name}"

@@ -12,7 +12,7 @@ MINECRAFT_SERVER_EXECUTE_GROUP="minecraft"
 #サービス実行ルートディレクトリパス
 #MINECRAFT_SERVER_ROOT=""
 
-#JQコマンドパス TODO:今のところ使ってない
+#JQコマンドパス
 #JQ_PATH=""
 
 #tarコマンドパス
